@@ -1,5 +1,7 @@
 package com.petpet.c3po.analysis;
 
+import java.util.Iterator;
+
 import junit.framework.Assert;
 
 import org.slf4j.Logger;
@@ -9,6 +11,7 @@ import org.junit.Test;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MapReduceOutput;
 import com.petpet.c3po.analysis.mapreduce.HistogramJob;
 import com.petpet.c3po.analysis.mapreduce.NumericAggregationJob;
@@ -51,15 +54,41 @@ public class MapReduceTest {
 	    HistogramJob job = new HistogramJob("test1", "format");
 	    MapReduceOutput output = job.execute();
 	    
-//	    BasicDBObject q = new BasicDBObject();
-//	    PersistenceLayer pl = Configurator.getDefaultConfigurator().getPersistence();
-//	    DBCollection col = pl.getDB().getCollection(Constants.TBL_ELEMENTS);
-//	    DBCursor cur = col.find();
-//	    while (cur.hasNext()) {
-//	    	log.debug(cur.next().toString());	    	
-//	    }
+	    for(Iterator<DBObject> it = output.results().iterator(); it.hasNext();) {
+			log.debug("object: {}", it.next().toString());
+	    }
 	  
-	    System.out.println(output);
+	    Assert.assertNotNull(output);
+  }
+  
+  
+  @Test
+  public void TestHistogramMapReduceNumeric() throws Exception {
+	    Configurator.getDefaultConfigurator().configure();
+	    
+	    HistogramJob job = new HistogramJob("test1", "size");
+	    job.getConfig().put("bin_width", "500000"); 	// 500k bin width
+	    MapReduceOutput output = job.execute();
+	    
+	    for(Iterator<DBObject> it = output.results().iterator(); it.hasNext();) {
+			log.debug("object: {}", it.next().toString());
+	    }
+	  
+	    Assert.assertNotNull(output);
+  }
+  
+  
+  @Test
+  public void TestHistogramMapReduceDate() throws Exception {
+	    Configurator.getDefaultConfigurator().configure();
+	    
+	    HistogramJob job = new HistogramJob("test1", "created");
+	    MapReduceOutput output = job.execute();
+	    
+	    for(Iterator<DBObject> it = output.results().iterator(); it.hasNext();) {
+			log.debug("object: {}", it.next().toString());
+	    }
+	  
 	    Assert.assertNotNull(output);
   }
   

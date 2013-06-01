@@ -39,40 +39,14 @@ public class BubbleChartJob extends MapReduceJob {
   public MapReduceOutput execute() {
     final Property p1 = this.getPersistence().getCache().getProperty(property1);
     final Property p2 = this.getPersistence().getCache().getProperty(property2);
-    String map = "";
-    if (p1.getType().equals(PropertyType.DATE.toString())) {
-    	LOG.error("Map-reduce for property of type Date not implemented yet");
-//      map = Constants.DATE_HISTOGRAM_MAP.replace("{}", p.getId());
-//
-//      String constraintKey = "metadata." + this.property + ".value";
-//      BasicDBObject constraintValue = new BasicDBObject("$type", 9);
-//      BasicDBObject prop = (BasicDBObject) this.getFilterquery().remove("metadata." + this.property + ".value");
-//      if (prop != null) {
-//        LOG.info("Old Date Property: " + prop.toString());
-//        List<BasicDBObject> and = new ArrayList<BasicDBObject>();
-//        and.add(new BasicDBObject("metadata." + this.property + ".value", prop));
-//        and.add(new BasicDBObject(constraintKey, constraintValue));
-//        this.getFilterquery().put("$and", and);// for date...
-//      } else {
-//        this.getFilterquery().append(constraintKey, constraintValue);
-//      }
-//
-//      LOG.debug("Date Filter Query adjusted: " + this.getFilterquery().toString());
-    } else if (p1.getType().equals(PropertyType.INTEGER.toString()) || p1.getType().equals(PropertyType.FLOAT.toString())) {
-    	LOG.error("Map-reduce for property of type {} not implemented yet", p1.getType());
-//      String width = this.getConfig().get("bin_width");
-//
-//      if (width == null) {
-//        String val = (String) this.getFilterquery().get("metadata." + this.property + ".value");
-//        width = inferBinWidth(val) + "";
-//      }
-//
-//      map = Constants.NUMERIC_HISTOGRAM_MAP.replace("{1}", this.property).replace("{2}", width);
-//
-    } else {
-      map = Constants.BUBBLECHART_MAP.replace("{1}", p1.getId())
-    		  .replace("{2}", p2.getId());
-    }
+    
+    String map = Constants.BUBBLECHART_MAP;
+    
+    map = map.replace("{1}", p1.getId());
+    map = map.replace("{2}", p2.getId());
+    
+    map = map.replace("{value1convert}", getMapConvertFunction(p1));
+    map = map.replace("{value2convert}", getMapConvertFunction(p2));
 
     LOG.debug("Executing histogram map reduce job with following map:\n{}", map);
     
@@ -83,6 +57,56 @@ public class BubbleChartJob extends MapReduceJob {
     cmd.setFinalize(Constants.BUBBLECHART_FINALIZE);
 
     return this.getPersistence().mapreduce(Constants.TBL_ELEMENTS, cmd);
+  }
+  
+  
+  private String getMapConvertFunction(Property p) {
+	  String res = "";
+	  
+	  if (p.getType().equals(PropertyType.DATE.toString())) {
+		  /* 
+		   * add "value is DATE type" constraint
+		   */
+		  String constraintKey = "metadata." + p.getId() + ".value";
+	      BasicDBObject constraintValue = new BasicDBObject("$type", 9);
+	      
+	      BasicDBObject prop = (BasicDBObject) this.getFilterquery()
+	    		  .remove("metadata." + p.getId() + ".value");
+	      
+	      if (prop != null) {
+	        LOG.info("Old Date Property: " + prop.toString());
+	        List<BasicDBObject> and = new ArrayList<BasicDBObject>();
+	        and.add(new BasicDBObject("metadata." + p.getId() + ".value", prop));
+	        and.add(new BasicDBObject(constraintKey, constraintValue));
+	        this.getFilterquery().put("$and", and);// for date...
+	      } else {
+	        this.getFilterquery().append(constraintKey, constraintValue);
+	      }
+	      LOG.debug("Date Filter Query adjusted: " + this.getFilterquery().toString());
+	      
+	      res = Constants.BUBBLECHART_MAP_CONVERT_DATE;
+	      
+	  } else if (p.getType().equals(PropertyType.INTEGER.toString()) 
+	    		   || p.getType().equals(PropertyType.FLOAT.toString())) {
+		  
+
+		  String width = this.getConfig().get("bin_width");
+
+		  if (width == null) {
+			  String val = (String) this.getFilterquery()
+	    				.get("metadata." + p.getId() + ".value");
+			  width = inferBinWidth(val) + "";
+		  }
+		  
+		  res = Constants.BUBBLECHART_MAP_CONVERT_NUMERIC
+				  .replace("{2}", width);
+	  } else {
+		  res = Constants.BUBBLECHART_MAP_CONVERT_STRING;
+	  }
+	  
+	  res = res.replace("{1}", p.getId());
+	  
+	  return res;
   }
   
   @Override

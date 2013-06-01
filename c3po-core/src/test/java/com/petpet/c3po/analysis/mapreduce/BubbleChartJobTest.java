@@ -29,8 +29,35 @@ public class BubbleChartJobTest {
 	
 	
 	@Test
-	public void BubbleCharTwoStringPropertiesTest() {
-		BubbleChartJob job = new BubbleChartJob("Photos", "format", "mimetype");
+	public void BubbleChartTwoStringPropertiesTest() {
+		BubbleChartJob job = new BubbleChartJob("test", "format", "mimetype");
+		MapReduceOutput output = job.execute();
+		
+		log.debug(output.toString());
+		
+		for (Iterator<DBObject> it = output.results().iterator(); it.hasNext(); ) {
+			log.debug("object: {}", it.next().toString());
+		}
+		assertNotNull(output);
+	}
+
+	@Test
+	public void BubbleChartPropertiesStringDateTest() {
+		BubbleChartJob job = new BubbleChartJob("test", "format", "created");
+		MapReduceOutput output = job.execute();
+		
+		log.debug(output.toString());
+		
+		for (Iterator<DBObject> it = output.results().iterator(); it.hasNext(); ) {
+			log.debug("object: {}", it.next().toString());
+		}
+		assertNotNull(output);
+	}
+
+	@Test
+	public void BubbleChartPropertiesStringNumericTest() {
+		BubbleChartJob job = new BubbleChartJob("test", "format", "size");
+		job.getConfig().put("bin_width", "500000");
 		MapReduceOutput output = job.execute();
 		
 		log.debug(output.toString());

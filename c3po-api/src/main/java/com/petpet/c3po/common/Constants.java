@@ -155,6 +155,10 @@ public final class Constants {
    * exact values of the properties for the emited result without using too
    * much space (this method is also faster, compared to adding the values to 
    * the 'value' object).  
+   * 
+   * Before using this map function the strings "{value1convert}" and 
+   * "{value2convert}" have to be replaced by one of the 
+   * BUBBLECHART_MAP_CONVERT_* constants, according to the property type  
    */
   public static final String BUBBLECHART_MAP = "function () {\n" +
   		"  var result = { count: 1,     " +
@@ -162,9 +166,9 @@ public final class Constants {
   		"               };\n " +
   		"  if (this.metadata['{1}'] != null && this.metadata['{2}'] != null) {\n" +
   		"    var value1 = this.metadata['{1}'].status !== 'CONFLICT' ? \n" +
-  		"                 this.metadata['{1}'].value : 'Conflicted';\n" +
+  		"                 ( {value1convert} ) : 'Conflicted';\n" +
   		"    var value2 = this.metadata['{2}'].status !== 'CONFLICT' ? \n" +
-  		"                 this.metadata['{2}'].value : 'Conflicted';\n" +
+  		"                 ( {value2convert} ) : 'Conflicted';\n" +
   		"    var key = value1 + \"" + BUBBLECHART_KEY_SEP + "\" + value2;\n" +
   		"    result.separator = value1.length;\n" +
   		"    emit(key, result);\n" +
@@ -172,7 +176,38 @@ public final class Constants {
   		"    emit('Unknown', result);\n" +
   		"  }\n" +
   		"}";
- 
+
+  /**
+   * convert part for the map-reduce of {@link Constants#BUBBLECHART_MAP}
+   * function.
+   * 
+   * before use replace "{1}" with the property id
+   */
+  public static final String BUBBLECHART_MAP_CONVERT_STRING = 
+		  "this.metadata['{1}'].value";
+  
+  /**
+   * convert part for the map-reduce of {@link Constants#BUBBLECHART_MAP}
+   * function.
+   *
+   * use just the year for the date
+   * 
+   * before use replace "{1}" with the property id
+   */
+  public static final String BUBBLECHART_MAP_CONVERT_DATE = 
+		  BUBBLECHART_MAP_CONVERT_STRING + ".getFullYear()";
+  
+  /**
+   * convert part for the map-reduce of {@link Constants#BUBBLECHART_MAP}
+   * function.
+   * 
+   * map a numeric value to the bin id
+   * 
+   * before use replace "{1}" with the property id and "{2}" with the bin width
+   */
+  public static final String BUBBLECHART_MAP_CONVERT_NUMERIC = 
+		  "Math.floor(" + BUBBLECHART_MAP_CONVERT_STRING + " / {2})";
+  
   /**
    * this is the reduce function for the bubblechart map-reduce data fetching
    * part. It simply counts the occurrences of value-tuples of the two defined
