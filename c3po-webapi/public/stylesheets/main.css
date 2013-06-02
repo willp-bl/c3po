@@ -501,7 +501,11 @@ display: none;
 
 #more {
 	float:right;
-	margin-left: 100px;
+	margin-left: 10px;
+}
+
+#bubble {
+	float: right;
 }
 
 .green_button {

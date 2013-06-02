@@ -5,6 +5,7 @@
 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="@routes.Assets.at("javascripts/excanvas.js")"></script><![endif]-->
 <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery.jqplot.min.js")"></script>
 <script type="text/javascript" src="@routes.Assets.at("javascripts/jqplot.barRenderer.min.js")"></script>
+<script type="text/javascript" src="@routes.Assets.at("javascripts/jqplot.bubbleRenderer.min.js")"></script>
 <script type="text/javascript" src="@routes.Assets.at("javascripts/jqplot.pieRenderer.min.js")"></script>
 <script type="text/javascript" src="@routes.Assets.at("javascripts/jqplot.categoryAxisRenderer.min.js")"></script>
 <script type="text/javascript" src="@routes.Assets.at("javascripts/jqplot.canvasAxisTickRenderer.min.js")"></script>
@@ -53,6 +54,7 @@ $(document).ready(function(){
    </div>
     @if(stats != null) {
         <div id="more"></div>
+        <div id="bubble"></div>
         <div id="statistics" class="">
             <h4>Size Stats</h4><br/>
             Count : @stats.getCount()<br />

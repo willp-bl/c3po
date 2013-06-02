@@ -1,7 +1,7 @@
 $(document).ready(
 		function() {
-			var button = $('<a  href="#" class="green_button">Add Diagram</a>')
-					.appendTo($('#more'));
+			var button = $('<a  href="#" class="green_button">Add Diagram</a>').appendTo($('#more'));
+			var buttonBubbleCharts = $('<a  href="#" class="green_button">Add Bubble Chart</a>').appendTo($('#bubble'));
 			button.click(function() {
 				$.ajax({
 					headers : {
@@ -17,8 +17,25 @@ $(document).ready(
 					}
 				});
 			});
+			
+			buttonBubbleCharts.click(function() {
+				$.ajax({
+					headers : {
+						Accept : "application/json; charset=utf-8",
+					},
+					type : 'GET',
+					url : '/c3po/properties',
+					timeout : 5000,
+					async : false,
+					success : function(oData) {
+						showBubbleChartPopup(oData);
+
+					}
+				});
+			});
 
 		});
+
 
 function showPopup(properties) {
 	$("#overlay").addClass('activeoverlay');
@@ -44,13 +61,66 @@ function showPopup(properties) {
 			url : '/c3po/property?name=' + $(this).val(),
 			timeout : 5000,
 			success : function(oData) {
-				showOptions(oData.type);
+				showOptions(oData.type, false);
 			}
 		});
 	});
 };
 
-function showOptions(type) {
+
+function showBubbleChartPopup(properties) {
+	$("#overlay").addClass('activeoverlay');
+
+	var popup = $('#filterpopup');
+	popup.children('.popupreason').text('Please select a property pair.');
+	var config = popup.children('.popupconfig');
+
+	var sel = $('<select id="prop1">').appendTo($(config));
+	$(sel).append($('<option>').text("").attr('value', ''));
+	$.each(properties, function(i, value) {
+		$(sel).append($('<option>').text(value).attr('value', value));
+	});
+
+
+	var sel2 = $('<select id="prop2">').appendTo($(config));
+	$(sel2).append($('<option>').text("").attr('value', ''));
+	$.each(properties, function(i, value) {
+		$(sel2).append($('<option>').text(value).attr('value', value));
+	});
+	
+	popup.css({
+		'display' : 'block',
+		'z-index' : 11
+	});
+	
+	$('.popupconfig #prop1').change(function() {
+		$.ajax({
+			type : 'GET',
+			url : '/c3po/property?name=' + $(this).val(),
+			timeout : 5000,
+			success : function(oData) {
+				hidePopupDialog();
+				drawBubbleChart("title");
+				
+			}
+		});
+	});
+	
+	$('.popupconfig #prop2').change(function() {
+		$.ajax({
+			type : 'GET',
+			url : '/c3po/property?name=' + $(this).val(),
+			timeout : 5000,
+			success : function(oData) {
+				
+				//showOptions(oData.type, true);
+				
+			}
+		});
+	});
+};
+
+function showOptions(type, bubble) {
 	if (type == "STRING" || type == "BOOL" || type == "DATE") {
 		var property = $('.popupconfig select').val();
 		hidePopupDialog();
@@ -75,7 +145,14 @@ function showOptions(type) {
 		});
 
 	} else {
-		showIntegerPropertyDialog('applyIntegerHistogramSelection()');
+		if(!bubble) {
+			showIntegerPropertyDialog('applyIntegerHistogramSelection()');
+		}
+		else {
+			var alg = "sqrt";
+			var width = -1;
+		}
+		
 	}
 }
 
@@ -209,6 +286,42 @@ function getPieChart(ttl) {
 	return options;
 };
 
+function getBubbleChart(ttl) {
+	var options = {
+			title : ttl,
+			seriesDefaults : {
+		           renderer : $.jqplot.BubbleRenderer,
+		           rendererOptions : {
+		               bubbleAlpha : 0.6,
+		               highlightAlpha : 0.8,
+		               varyBubbleColors : false,
+		               color : '#639B00',
+		               bubbleGradients: true
+		           },
+		           shadow : true,
+		           shadowAlpha : 0.05,
+		           
+			},
+			highlighter : {
+				show : true,
+				tooltipLocation : 'n',
+				showTooltip : true,
+				useAxesFormatters : true,
+				sizeAdjust : 0.5,
+				tooltipAxes : 'xy',
+				bringSeriesToFront : true,
+				tooltipOffset : 50,
+			},
+			cursor : {
+				style : 'pointer', 
+				show : true,
+				showTooltip : false,
+				useAxesFormatters : true,
+			}
+		};
+		return options;
+}
+
 function prettifyTitle(title) {
 	title = title.replace(/_/g, " ");
 	return title.replace(/\w\S*/g, function(txt) {
@@ -269,3 +382,42 @@ function drawGraphs(data, options) {
 		idx++;
 	})
 };
+
+
+function drawBubbleChart(title) {
+	// TODO append instead of prepend once testing is done
+	var container = $('<div class="span-24">');
+	var graphsdiv = $('#graphs').prepend(container);
+	
+	var data = 
+		[[11, 123, 1236, "Acura"], [45, 92, 1067, "Alfa Romeo"],
+		 [24, 104, 1176, "AM General"], [50, 23, 610, "Aston Martin Lagonda"],
+		 [18, 17, 539, "Audi"], [7, 89, 864, "BMW"], [2, 13, 1026, "Bugatti"]];
+	            
+	
+	clazz="";
+	ttl="bubbleChart";
+	container.append('<div id="' + ttl + '" class="' + clazz + '">');
+	
+	$.jqplot(ttl, [ data ], getBubbleChart(prettifyTitle(ttl)));
+
+   /*
+   $.each(data, function(i, d) {
+
+		$('#' + i).bind(
+				'jqplotDataClick',
+				function(ev, seriesIndex, pointIndex, data) {
+					startSpinner();
+					var url = '/c3po/filter?filter=' + i + '&value='
+							+ pointIndex + '&type=graph';
+
+					
+					$.post(url, function(data) {
+						window.location = '/c3po/overview';
+					});
+				});
+
+	})*/
+};
+
+
