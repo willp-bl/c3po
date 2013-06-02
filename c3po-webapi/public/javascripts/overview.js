@@ -93,31 +93,16 @@ function showBubbleChartPopup(properties) {
 		'z-index' : 11
 	});
 	
-	$('.popupconfig #prop1').change(function() {
-		$.ajax({
-			type : 'GET',
-			url : '/c3po/property?name=' + $(this).val(),
-			timeout : 5000,
-			success : function(oData) {
-				hidePopupDialog();
-				drawBubbleChart("title");
-				
-			}
-		});
+	// TODO ALEX change to automatically generated ids for more property pairs
+	$('.popupconfig select').change(function() {
+		var value1 = $('#prop1').val();
+		var value2 = $('#prop2').val();
+		if(value1 && value2 && (value1 != value2)) {
+			hidePopupDialog();
+			drawBubbleChart("title");
+		}
 	});
-	
-	$('.popupconfig #prop2').change(function() {
-		$.ajax({
-			type : 'GET',
-			url : '/c3po/property?name=' + $(this).val(),
-			timeout : 5000,
-			success : function(oData) {
-				
-				//showOptions(oData.type, true);
-				
-			}
-		});
-	});
+
 };
 
 function showOptions(type, bubble) {
@@ -385,8 +370,12 @@ function drawGraphs(data, options) {
 
 
 function drawBubbleChart(title) {
-	// TODO append instead of prepend once testing is done
-	var container = $('<div class="span-24">');
+	ttl="bubbleChart";
+	if($("#bubbleCh").length > 0) {
+		$("#bubbleCh").remove();
+	}
+	// TODO ALEX append instead of prepend once testing is done
+	var container = $('<div id="bubbleCh" class="span-24">');
 	var graphsdiv = $('#graphs').prepend(container);
 	
 	var data = 
@@ -396,7 +385,6 @@ function drawBubbleChart(title) {
 	            
 	
 	clazz="";
-	ttl="bubbleChart";
 	container.append('<div id="' + ttl + '" class="' + clazz + '">');
 	
 	$.jqplot(ttl, [ data ], getBubbleChart(prettifyTitle(ttl)));

@@ -348,13 +348,14 @@ img.smalllogo{
 
 #filter {
     background: url('../images/black_linen.png');
-    height:150px;
-    width:100%;
+    min-height: 150px;
+	max-height: 300px;
+    width: 100%;
     border-bottom: 4px solid black;
     display:none;
     color: white;
     padding:10px;
-    overflow: scroll;
+    overflow: auto;
 }
 
 #filter h2{
@@ -362,18 +363,18 @@ img.smalllogo{
 }
 
 #filterpopup{
-position:absolute;
-z-index:10;
-margin-left:25%;
-top: 35%;
-width:50%;
-height:230px;
-color:#FF0000;
-border: 4px solid #68A200;
-background-color:#FFF;
-border-radius: 5px;
-font: 14px Verdana, Arial, Helvetica, sans-serif;
-display: none;
+	position:absolute;
+	z-index:10;
+	margin-left:25%;
+	top: 35%;
+	width:50%;
+	height:230px;
+	color:#FF0000;
+	border: 4px solid #68A200;
+	background-color:#FFF;
+	border-radius: 5px;
+	font: 14px Verdana, Arial, Helvetica, sans-serif;
+	display: none;
 }
 
 #filterpopup .popupreason{
@@ -441,16 +442,20 @@ display: none;
     box-shadow:0px 0px 3px #69E45C;
 }
 
-
-#addfilter {
-	float:right;
-    margin-right:20px;
-        
+.filterType {
+	position: absolute;
+    right: 0;
+	margin-right:20px;
 }
 
-#addfilter a{
-    font-size:16pt;
+.filterType a {
+	font-size:16pt;
     padding-bottom:2px;
+	margin-left: 10px;
+}
+
+#addfilterdouble {
+	margin-top: 50px;
 }
 
 .propertyfilter {

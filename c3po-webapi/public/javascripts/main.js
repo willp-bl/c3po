@@ -220,6 +220,23 @@ function addNewFilter() {
 
 };
 
+function addNewDoubleFilter() {
+	$.ajax ({
+		headers: { 
+			Accept : "application/json; charset=utf-8",
+		},
+		type:     'GET',
+		url:      '/c3po/properties',
+		timeout:  5000,
+		async: false,
+		success:  function (oData) {
+			addNewPropertiesSelect(oData);
+
+		}
+	});
+
+};
+
 //adds a new select with all properties for the next filter selection
 function addNewPropertiesSelect(properties) {
 	// check if the previous filter is already setup accordingly
