@@ -236,9 +236,9 @@ public final class Constants {
    */
   public static final String BUBBLECHART_FINALIZE = "function (key, rv) {" +
   		"  rv.value1 = key.substring(0, rv.separator);" +
-  		"  rv.value2 = key.substring(rv.separator + " + BUBBLECHART_KEY_SEP.length() + ");" +
+  		"  rv.value2 = key.substring(rv.separator + \"" + BUBBLECHART_KEY_SEP + "\".length);" +
   		"  return rv;" +
-  		"}";
+  		"}"; 
   
   /**
    * A javascript Map function for calculating the min, max, sum, avg, sd and

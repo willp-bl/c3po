@@ -1,11 +1,15 @@
 package controllers;
 
+import helpers.BaseGraph;
+import helpers.BubbleGraph;
 import helpers.Graph;
 import helpers.GraphData;
 import helpers.Statistics;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import net.sf.ehcache.search.Results;
 
 import play.Logger;
 import play.mvc.Controller;
@@ -14,6 +18,8 @@ import views.html.overview;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
+import com.petpet.c3po.analysis.mapreduce.BubbleChartJob;
+import com.petpet.c3po.analysis.mapreduce.JobResult;
 import com.petpet.c3po.common.Constants;
 import com.petpet.c3po.datamodel.Filter;
 import com.petpet.c3po.utils.Configurator;
@@ -72,7 +78,7 @@ public class Overview extends Controller {
   }
 
   private static GraphData getDefaultGraphs(Filter f, boolean root) {
-    List<Graph> graphs = new ArrayList<Graph>();
+    List<BaseGraph> graphs = new ArrayList<BaseGraph>();
     for (String prop : Application.PROPS) {
       Graph graph;
       if (root) {
@@ -83,6 +89,14 @@ public class Overview extends Controller {
 
       graphs.add(graph);
 
+      // only for testing...
+      BubbleChartJob bc = new BubbleChartJob(f.getCollection(), 
+    		  "format", "created");
+      JobResult result = new JobResult(bc.execute());
+      BubbleGraph g = new BubbleGraph("format", "created");
+      g.setFromMapReduceJob(result.getResults());
+      graphs.add(g);
+      
       // TODO decide when to cut long tail...
     }
 

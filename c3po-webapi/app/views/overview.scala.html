@@ -25,10 +25,11 @@ $(document).ready(function(){
 
   var data = {
      @for(g <- graphs.getGraphs()) {
-      '@g.getProperty()': [  @for((k, i) <- g.getKeys().zipWithIndex){
-         ['@k', @g.getValues().get(i)],
-       }
-       ],
+      '@g.getTitle()': {
+        type: '@g.getType()',
+        data: @g.getGraphData(),
+        options: @g.getGraphOptions()
+       },
       }
   };
   drawGraphs(data);

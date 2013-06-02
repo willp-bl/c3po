@@ -296,7 +296,8 @@ function getBubbleChart(ttl) {
 		               highlightAlpha : 0.8,
 		               varyBubbleColors : false,
 		               color : '#639B00',
-		               bubbleGradients: true
+		               bubbleGradients: true,
+		               showLabels: false
 		           },
 		           shadow : true,
 		           shadowAlpha : 0.05,
@@ -343,7 +344,7 @@ function drawGraphs(data, options) {
 			clazz = "dia_right";
 		}
 
-		if (d.length > 30) {
+		if (d.data.length > 30) {
 			container = $('<div class="span-24">').appendTo(graphsdiv);
 			clazz = "dia_full";
 			idx++; // if full length skip to next row left
@@ -374,7 +375,12 @@ function drawGraphs(data, options) {
 						window.location = '/c3po/overview';
 					});
 				});
-		$.jqplot(i, [ d ], getBarChart(prettifyTitle(i)));
+		if (d.type == "histogram") {		
+		  $.jqplot(i, [ d.data ], getBarChart(prettifyTitle(i)));
+		} else if (d.type == "bubblechart") {
+		  // draw a bubble chart
+		  $.jqplot(i, [ d.data ], getBubbleChart(prettifyTitle(i)));
+		}
 
 		if (idx == 0) {
 			idx++; // if first row skip the right and go to next row...

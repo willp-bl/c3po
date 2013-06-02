@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Graph {
+public class Graph implements BaseGraph {
 
   private String property;
   private Map<String, String> options;
@@ -47,6 +47,32 @@ public class Graph {
 
   public void setProperty(String property) {
     this.property = property;
+  }
+
+  @Override
+  public String getGraphData() {
+  	StringBuilder res = new StringBuilder();
+  	res.append("[\n");
+  	for (int i = 0; i < getKeys().size(); i++) {
+  		res.append("['" + getKeys().get(i) + "', " + getValues().get(i) + "], \n");
+  	}
+  	res.append("]\n");
+  	return res.toString();
+  }
+
+  @Override
+  public String getGraphOptions() {
+	return "null";
+  }
+
+@Override
+  public String getTitle() {
+	return getProperty();
+  }
+	
+  @Override
+  public String getType() {
+	return "histogram";
   }
 
   public void convertToPercentage() {
@@ -133,5 +159,6 @@ public class Graph {
   public void setOptions(Map<String, String> options) {
     this.options = options;
   }
+
 
 }
