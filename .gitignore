@@ -12,3 +12,5 @@ c3po-webapi/war/
 */*.csv
 */logs/
 */log
+c3po-webapi/RUNNING_PID
+c3po-webapi/standalone/*

@@ -140,6 +140,106 @@ public final class Constants {
    */
   public static final String HISTOGRAM_REDUCE = "function reduce(key, values) {var res = 0;values.forEach(function (v) {res += v;});return res;}";
 
+  
+  /**
+   * a string delimiter used during the map-reduce for the bubblechart job
+   */
+  public static final String BUBBLECHART_KEY_SEP = ":";
+  
+  /**
+   * a javascript map function to map values of two given property ids to one
+   * value. The emitted key of this map function consists of the two values
+   * of the properties, concatenated with a separator 
+   * {@link Constants#BUBBLECHART_KEY_SEP}. The emitted value includes the 
+   * position of the separator within the key string. This way we know the 
+   * exact values of the properties for the emited result without using too
+   * much space (this method is also faster, compared to adding the values to 
+   * the 'value' object).  
+   * 
+   * Before using this map function the strings "{value1convert}" and 
+   * "{value2convert}" have to be replaced by one of the 
+   * BUBBLECHART_MAP_CONVERT_* constants, according to the property type  
+   */
+  public static final String BUBBLECHART_MAP = "function () {\n" +
+  		"  var result = { count: 1,     " +
+  		"                 separator: 0 " +	// store the position of the separator 
+  		"               };\n " +
+  		"  if (this.metadata['{1}'] != null && this.metadata['{2}'] != null) {\n" +
+  		"    var value1 = this.metadata['{1}'].status !== 'CONFLICT' ? \n" +
+  		"                 ( {value1convert} ) : 'Conflicted';\n" +
+  		"    var value2 = this.metadata['{2}'].status !== 'CONFLICT' ? \n" +
+  		"                 ( {value2convert} ) : 'Conflicted';\n" +
+  		"    var key = value1 + \"" + BUBBLECHART_KEY_SEP + "\" + value2;\n" +
+  		"    result.separator = value1.length;\n" +
+  		"    emit(key, result);\n" +
+  		"  } else {\n" +
+  		"    emit('Unknown', result);\n" +
+  		"  }\n" +
+  		"}";
+
+  /**
+   * convert part for the map-reduce of {@link Constants#BUBBLECHART_MAP}
+   * function.
+   * 
+   * before use replace "{1}" with the property id
+   */
+  public static final String BUBBLECHART_MAP_CONVERT_STRING = 
+		  "this.metadata['{1}'].value";
+  
+  /**
+   * convert part for the map-reduce of {@link Constants#BUBBLECHART_MAP}
+   * function.
+   *
+   * use just the year for the date
+   * 
+   * before use replace "{1}" with the property id
+   */
+  public static final String BUBBLECHART_MAP_CONVERT_DATE = 
+		  BUBBLECHART_MAP_CONVERT_STRING + ".getFullYear()";
+  
+  /**
+   * convert part for the map-reduce of {@link Constants#BUBBLECHART_MAP}
+   * function.
+   * 
+   * map a numeric value to the bin id
+   * 
+   * before use replace "{1}" with the property id and "{2}" with the bin width
+   */
+  public static final String BUBBLECHART_MAP_CONVERT_NUMERIC = 
+		  "Math.floor(" + BUBBLECHART_MAP_CONVERT_STRING + " / {2})";
+  
+  /**
+   * this is the reduce function for the bubblechart map-reduce data fetching
+   * part. It simply counts the occurrences of value-tuples of the two defined
+   * properties.  
+   */
+  public static final String BUBBLECHART_REDUCE = "function reduce(key, value) {" +
+  		"  var sum = 0;" +
+  		"  value.forEach(function (v) {" +
+  		"       sum += v.count;" +
+  		"    });" +
+  		"  return { count: sum," +
+  		"           separator: value[0].separator " +
+  		"         };" +
+  		"}";
+  
+  /**
+   * after finishing the map reduce part for the bubblechart, we extract the 
+   * values from the key again using the stored separator position. The result
+   * after this finalize function looks like this:
+   * key = "some-value1:some-value2"
+   * value = {  count: x,
+   *            separator: 11,
+   *            value1: some-value1,
+   *            value2: some-value2
+   *         } 
+   */
+  public static final String BUBBLECHART_FINALIZE = "function (key, rv) {" +
+  		"  rv.value1 = key.substring(0, rv.separator);" +
+  		"  rv.value2 = key.substring(rv.separator + " + BUBBLECHART_KEY_SEP.length() + ");" +
+  		"  return rv;" +
+  		"}";
+  
   /**
    * A javascript Map function for calculating the min, max, sum, avg, sd and
    * var of a numeric property. Note that there is a wildcard {1} that has to be
