@@ -1,5 +1,6 @@
 package controllers;
 
+import helpers.BubbleGraph;
 import helpers.Graph;
 import helpers.PropertyValuesFilter;
 import helpers.Statistics;
@@ -21,7 +22,9 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MapReduceCommand.OutputType;
 import com.mongodb.MapReduceOutput;
+import com.petpet.c3po.analysis.mapreduce.BubbleChartJob;
 import com.petpet.c3po.analysis.mapreduce.HistogramJob;
+import com.petpet.c3po.analysis.mapreduce.JobResult;
 import com.petpet.c3po.analysis.mapreduce.MapReduceJob;
 import com.petpet.c3po.analysis.mapreduce.NumericAggregationJob;
 import com.petpet.c3po.api.dao.Cache;
@@ -337,7 +340,7 @@ public class FilterController extends Controller {
     if (p.getType().equals(PropertyType.INTEGER.toString())) {
       calculateNumericHistogramResults(output, keys, values, width);
     } else {
-     calculateHistogramResults(output, keys, values);
+      calculateHistogramResults(output, keys, values);
     }
     
     result.sort();
@@ -405,6 +408,58 @@ public class FilterController extends Controller {
     return stats;
   }
 
+  public static BubbleGraph getBubbleGraph(String property1, String property2) {
+	Filter filter = Application.getFilterFromSession();
+	return getBubbleGraph(filter, property1, property2);
+  }
+  
+  public static BubbleGraph getBubbleGraph(Filter filter, 
+		  String property1, String property2) {
+	if (filter == null)
+		return null;
+	
+	BubbleGraph g = null;
+	
+    BasicDBObject ref = new BasicDBObject("descriminator", filter.getDescriminator())
+    	.append("collection", filter.getCollection());
+    DBCursor cursor = Configurator.getDefaultConfigurator()
+    		.getPersistence().find(Constants.TBL_FILTERS, ref);
+    
+    List<? extends DBObject> graphData;
+    if (cursor.count() == 1) { // only root filter
+      // use cached values
+      Logger.info("getBubbleChart: no filter, use cached values");
+      final PersistenceLayer p = Configurator.getDefaultConfigurator().getPersistence();
+      final String cacheCol = "bubblechart_" 
+    		  + filter.getCollection() + "_" + property1 + "_" + property2;
+      DBCollection dbc = p.getDB().getCollection(cacheCol);
+      DBCursor cacheCursor = dbc.find();
+	  if (cacheCursor.count() == 0) {
+		Logger.info("getBubbleChart: cache doesn't exist yet.");
+		final MapReduceJob job = new BubbleChartJob(filter.getCollection(),
+				property1, property2);
+		job.setType(OutputType.REPLACE);
+		job.setOutputCollection(cacheCol);
+		graphData = job.run().getResults();
+	  }
+	  cacheCursor = dbc.find();
+	  graphData = cacheCursor.toArray();
+	  
+    } else {
+      // apply filter query
+      Logger.info("getBubbleChart: filter active, can not use cache");
+      final MapReduceJob job = new BubbleChartJob(filter.getCollection(), 
+    		  property1, property2, Application.getFilterQuery(filter));
+      graphData = job.run().getResults();
+    }
+    
+    g = new BubbleGraph(property1, property2);
+    g.setFromMapReduceJob(graphData);
+	
+	return g;
+  }
+  
+  
   private static Graph getOrdinalGraph(Filter filter, String property) {
     Graph g = null;
     if (filter != null) {

@@ -96,11 +96,21 @@ function showBubbleChartPopup(properties) {
 	$('.popupconfig #prop1').change(function() {
 		$.ajax({
 			type : 'GET',
-			url : '/c3po/property?name=' + $(this).val(),
+			url : '/c3po/overview/bubblegraph?' + 
+					'property1=' + $('.popupconfig #prop1').val() +
+					'&property2=' + $('.popupconfig #prop2').val(),
 			timeout : 5000,
 			success : function(oData) {
 				hidePopupDialog();
-				drawBubbleChart("title");
+				//drawBubbleChart("title");
+				var data = {};
+				data[oData.title] = {
+				                     type: oData.type,
+				                     data: oData.graphData,
+				                     options: oData.graphOptions
+				                     };
+				
+				drawGraphs(data);
 				
 			}
 		});
@@ -137,7 +147,13 @@ function showOptions(type, bubble) {
 				});
 				var id = oData.property;
 				var data = {};
-				data[id] = hist;
+				data[id] = {
+				         type: 'histogram',
+				         data: hist,
+				         options: null
+				         };
+				
+				
 				drawGraphs(data);
 				//scroll to bottom of page.
 

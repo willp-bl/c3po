@@ -76,6 +76,12 @@ public class Overview extends Controller {
 
     return ok(play.libs.Json.toJson(g));
   }
+  
+  public static Result getBubbleGraph(String property1, String property2) {
+	BaseGraph g = FilterController.getBubbleGraph(property1, property2);
+    response().setContentType("application/json");
+	return ok(play.libs.Json.toJson(g));
+  }
 
   private static GraphData getDefaultGraphs(Filter f, boolean root) {
     List<BaseGraph> graphs = new ArrayList<BaseGraph>();
@@ -90,12 +96,7 @@ public class Overview extends Controller {
       graphs.add(graph);
 
       // only for testing...
-      BubbleChartJob bc = new BubbleChartJob(f.getCollection(), 
-    		  "format", "created");
-      JobResult result = new JobResult(bc.execute());
-      BubbleGraph g = new BubbleGraph("format", "created");
-      g.setFromMapReduceJob(result.getResults());
-      graphs.add(g);
+      graphs.add(FilterController.getBubbleGraph(f, "format", "created"));
       
       // TODO decide when to cut long tail...
     }

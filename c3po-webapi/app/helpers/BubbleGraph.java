@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 
 
 public class BubbleGraph implements BaseGraph {
@@ -26,7 +27,7 @@ public class BubbleGraph implements BaseGraph {
 	}
 	
 	
-	public void setFromMapReduceJob(List<BasicDBObject> results) {
+	public void setFromMapReduceJob(List<? extends DBObject> results) {
 		
 		keys1 = new ArrayList<String>(results.size());
 		keys2 = new ArrayList<String>(results.size());
@@ -35,7 +36,7 @@ public class BubbleGraph implements BaseGraph {
 		keyMap1 = new HashMap<String, Integer>();
 		keyMap2 = new HashMap<String, Integer>();
 		
-		for (BasicDBObject obj : results) {
+		for (DBObject obj : results) {
 //			String key = obj.getString("_id");
 			BasicDBObject value = (BasicDBObject) obj.get("value");
 			

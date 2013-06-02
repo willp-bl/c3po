@@ -23,17 +23,16 @@ public class BubbleChartJob extends MapReduceJob {
   private String property2;
 
   public BubbleChartJob(String c, String property1, String property2) {
-    this.setC3poCollection(c);
-    this.property1 = property1;
-    this.property2 = property2;
-    this.setFilterquery(new BasicDBObject("collection", c));
-    this.setConfig(new HashMap<String, String>());
+	  this(c, property1, property2, new BasicDBObject("collection", c));
   }
 
   public BubbleChartJob(String c, String property1, String property2, 
 		  BasicDBObject query) {
-    this(c, property1, property2);
+    this.setC3poCollection(c);
+    this.property1 = property1;
+    this.property2 = property2;
     this.setFilterquery(query);
+    this.setConfig(new HashMap<String, String>());
   }
 
   public MapReduceOutput execute() {
