@@ -442,10 +442,14 @@ img.smalllogo{
     box-shadow:0px 0px 3px #69E45C;
 }
 
-.filterType {
-	position: absolute;
-    right: 0;
+.filterButtons {
+	float: right;
 	margin-right:20px;
+}
+
+.filterType {
+	text-align: right;
+	padding-bottom: 10px;
 }
 
 .filterType a {
@@ -454,15 +458,20 @@ img.smalllogo{
 	margin-left: 10px;
 }
 
-#addfilterdouble {
-	margin-top: 50px;
-}
-
 .propertyfilter {
 	margin-bottom: 10px;
 }
 
 .propertyfilter select {
+	margin-right:25px;
+}
+
+.propertyfilter2 {
+	margin-bottom: 10px;
+	margin-left: 37px;
+}
+
+.propertyfilter2 select {
 	margin-right:25px;
 }
 

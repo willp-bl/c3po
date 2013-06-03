@@ -79,13 +79,15 @@ $(document).ready(function() {
   </div>
   <div id="filter">
     @if(session.get("current.filter")) {
-    <div id="addfilter" class="filterType">
-      Single Property
-      <a class="green_button" href="javascript:addNewFilter()">+</a>
-    </div>
-    <div id="addfilterdouble" class="filterType">
-      Twin Property
-      <a class="green_button" href="javascript:addNewFilter()">+</a>
+    <div class="filterButtons">
+	    <div id="addfilter" class="filterType">
+	      Single Property
+	      <a class="green_button" href="javascript:addNewFilter()">+</a>
+	    </div>
+	    <div id="addfilterdouble" class="filterType">
+	      Bubble Chart Property
+	      <a class="green_button" href="javascript:addNewFilter(true)">+</a>
+	    </div>
     </div>
     <h2>Filter</h2>
     } else {

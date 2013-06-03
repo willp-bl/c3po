@@ -4,21 +4,21 @@ import java.util.List;
 
 public class GraphData {
 
-  private List<Graph> graphs;
+  private List<BaseGraph> graphs;
 
   public GraphData() {
     
   }
   
-  public GraphData(List<Graph> graphs) {
+  public GraphData(List<BaseGraph> graphs) {
     this.setGraphs(graphs);
   }
 
-  public List<Graph> getGraphs() {
+  public List<BaseGraph> getGraphs() {
     return graphs;
   }
 
-  public void setGraphs(List<Graph> graphs) {
+  public void setGraphs(List<BaseGraph> graphs) {
     this.graphs = graphs;
   }
 }

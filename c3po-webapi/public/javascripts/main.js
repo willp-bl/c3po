@@ -203,7 +203,7 @@ function stopSpinner() {
 //###############################
 //#			  Filter			#
 //###############################
-function addNewFilter() {
+function addNewFilter(bubbleChart) {
 	$.ajax ({
 		headers: { 
 			Accept : "application/json; charset=utf-8",
@@ -213,24 +213,11 @@ function addNewFilter() {
 		timeout:  5000,
 		async: false,
 		success:  function (oData) {
-			addNewPropertiesSelect(oData);
-
-		}
-	});
-
-};
-
-function addNewDoubleFilter() {
-	$.ajax ({
-		headers: { 
-			Accept : "application/json; charset=utf-8",
-		},
-		type:     'GET',
-		url:      '/c3po/properties',
-		timeout:  5000,
-		async: false,
-		success:  function (oData) {
-			addNewPropertiesSelect(oData);
+			if(bubbleChart) {
+				addNewPropertiesSelect(oData, true);
+			} else {
+				addNewPropertiesSelect(oData);
+			}
 
 		}
 	});
@@ -238,7 +225,7 @@ function addNewDoubleFilter() {
 };
 
 //adds a new select with all properties for the next filter selection
-function addNewPropertiesSelect(properties) {
+function addNewPropertiesSelect(properties, bubbleChart) {
 	// check if the previous filter is already setup accordingly
 	var show = false; 
 	if ($('.propertyfilter:last')[0]) {
@@ -246,6 +233,9 @@ function addNewPropertiesSelect(properties) {
 		if(selects.length > 1 && $(selects[1]).val() !== "") {
 			show = true;
 		} else {
+			if(bubbleChart) {
+				
+			}
 			$('.propertyfilter:last').effect("shake", {distance:10, times:3, direction: 'up'}, 80);
 		}
 	} else {
@@ -262,6 +252,7 @@ function addNewPropertiesSelect(properties) {
 		$(deletediv).click(function() {
 			startSpinner();
 			var property = $(this).siblings('select:first').val();
+			
 			$.ajax({
 				type:     'DELETE',
 				url:      '/c3po/filter?property=' + property,
@@ -271,6 +262,21 @@ function addNewPropertiesSelect(properties) {
 					window.location.reload();
 				}
 			});
+
+			if(bubbleChart) {
+				var property2 = $(this).next('select:first').val();
+				$.ajax({
+					type:     'DELETE',
+					url:      '/c3po/filter?property=' + property2,
+					timeout:  5000,
+					success:  function(oData) {
+						stopSpinner();
+						window.location.reload();
+					}
+				});
+				$(this).parent().next().remove();
+			}
+
 			$(this).parent().remove();
 
 		});
@@ -281,11 +287,25 @@ function addNewPropertiesSelect(properties) {
 		$.each(properties, function(i, value) {
 			$(sel).append($('<option>').text(value).attr('value', value));
 		});
+		
+		// if it's a bubble chart filter then add 2 drop down lists
+		var sel2 = null;
+		var div2 = null;
+		if(bubbleChart) {
+			div2 = $('<div class="propertyfilter2"></div>').appendTo('#filter');
+			
+			sel2 = $('<select>').appendTo($(div2));
+			$(sel2).append($('<option>').text("").attr('value',''));
+			$.each(properties, function(i, value) {
+				$(sel2).append($('<option>').text(value).attr('value', value));
+			});
+		}
 
 		// if the select is clicked then get the values for the current
 		// option.
-		$(sel).change(function() {
+		$(sel).add(sel2).change(function() {
 			var property = $(this).val();
+			var divID = $(this).parent();
 			if (property) {
 				var old = $(this).parent().attr('oldValue');
 				$(this).parent().attr('oldValue', property);
@@ -306,7 +326,6 @@ function addNewPropertiesSelect(properties) {
 						collection = oData;
 					}
 				});
-
 				var url = '/c3po/filter/values?filter='+property+'&collection=' + collection;
 
 				$.ajax ({
@@ -319,16 +338,22 @@ function addNewPropertiesSelect(properties) {
 							showIntegerPropertyDialog('getValuesForProperty("' + url + '")');
 
 						} else { 
-							showOtherProperty(url, div);
+							//showOtherProperty(url, div2); 
+							showOtherProperty(url, divID); 
 						}	    
 					}
 				});
-
+				
 
 			} else {
-				$(sel).effect("highlight", {color:'#FF1400'} , "slow");
+				$(this).effect("highlight", {color:'#FF1400'} , "slow");
 				if ($(div).children('select').length > 1) {
 					($(div).children('select:last')).remove();
+				}
+				if(bubbleChart) {
+					if ($(div2).children('select').length > 1) {
+						($(div2).children('select:last')).remove();
+					}
 				}
 			}
 		});

@@ -23,6 +23,7 @@ GET     /c3po/filter/values                    controllers.FilterController.getV
 # Collection Overview
 GET     /c3po/overview                         controllers.Overview.index()
 GET     /c3po/overview/graph                   controllers.Overview.getGraph(property: String)
+GET     /c3po/overview/bubblegraph             controllers.Overview.getBubbleGraph(property1: String, property2: String)
 
 # Elements Page
 GET     /c3po/objects                          controllers.Elements.index()
