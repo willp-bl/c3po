@@ -93,12 +93,12 @@ function showBubbleChartPopup(properties) {
 		'z-index' : 11
 	});
 
-	// TODO ALEX change to automatically generated ids for more property pairs
+
 	$('.popupconfig select').change(function() {
 		var value1 = $('#prop1').val();
 		var value2 = $('#prop2').val();
 		if(value1 && value2 && (value1 != value2)) {
-			alert("success");
+			//alert("success");
 			$.ajax({
 				type : 'GET',
 				url : '/c3po/overview/bubblegraph?' + 
@@ -329,6 +329,14 @@ function getBubbleChart(ttl) {
 				show : true,
 				showTooltip : false,
 				useAxesFormatters : true,
+			},
+			axes : {
+				xaxis : {
+					autoscale: true,
+				},
+				yaxis : {
+					autoscale : true,
+				}
 			}
 		};
 		return options;

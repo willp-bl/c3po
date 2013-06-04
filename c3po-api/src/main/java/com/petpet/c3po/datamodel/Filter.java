@@ -1,5 +1,10 @@
 package com.petpet.c3po.datamodel;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
@@ -12,82 +17,168 @@ import com.mongodb.DBObject;
  * 
  */
 public class Filter {
-  
-  private String descriminator;
 
-  /**
-   * The collection that is filtered.
-   */
-  private String collection;
+	private String descriminator;
 
-  /**
-   * The property that is filtered by this filter (e.g. mimetype).
-   */
-  private String property;
+	/**
+	 * The collection that is filtered.
+	 */
+	private String collection;
 
-  /**
-   * The value of the property by which the filter is partitioning (e.g.
-   * application/pdf).
-   */
-  private String value;
+	/**
+	 * The property that is filtered by this filter (e.g. mimetype).
+	 */
+	private String property;
 
-  
-  /**
-   * Creates a default root filter. This means that the filter has no parent
-   * filter.
-   * 
-   * @param collection
-   *          the collection to filter.
-   * @param property
-   *          the property to apply.
-   * @param value
-   *          the value of the property to apply for this filter.
-   */
-  public Filter(String collection, String property, String value) {
-    this.collection = collection;
-    this.property = property;
-    this.value = value;
-  }
+	/**
+	 * The value of the property by which the filter is partitioning (e.g.
+	 * application/pdf).
+	 */
+	private String value;
 
-  public String getDescriminator() {
-    return descriminator;
-  }
+	/**
+	 * The type of filter:
+	 * 		null = basic filter
+	 * 		bubblefilter = bubble chart filter with 2 property - value pairs
+	 */
+	private String type;
 
-  public void setDescriminator(String id) {
-    this.descriminator = id;
-  }
+	/**
+	 * The list of property - value pairs of the bubble filter
+	 */
+	private List<Entry<String, String>> properties;
 
-  public String getCollection() {
-    return collection;
-  }
 
-  public void setCollection(String collection) {
-    this.collection = collection;
-  }
 
-  public String getProperty() {
-    return property;
-  }
+	/**
+	 * Creates a default root filter. This means that the filter has no parent
+	 * filter.
+	 * 
+	 * @param collection
+	 *          the collection to filter.
+	 * @param property
+	 *          the property to apply.
+	 * @param value
+	 *          the value of the property to apply for this filter.
+	 */
+	public Filter(String collection, String property, String value) {
+		type = "null";
+		this.collection = collection;
+		this.property = property;
+		this.value = value;
+	}
 
-  public void setProperty(String property) {
-    this.property = property;
-  }
 
-  public String getValue() {
-    return value;
-  }
+	/**
+	 * Creates a default root filter for Bubble Charts.
+	 * @param collection
+	 *          the collection to filter.
+	 * @param property1
+	 *          the first property to apply.
+	 * @param value1
+	 *          the value of the first property to apply for this filter.
+	 * @param property2
+	 *          the second property to apply.
+	 * @param value2
+	 *          the value of the second property to apply for this filter.
+	 */
+	public Filter(String collection, String property1, String value1, String property2, String value2) {
+		type = "bubblefilter";
+		this.collection = collection;
+		properties = new ArrayList<Entry<String, String>>();
+		properties.add(new SimpleEntry<String, String>(property1, value1));
+		properties.add(new SimpleEntry<String, String>(property2, value2));
+	}
 
-  public void setValue(String value) {
-    this.value = value;
-  }
+	public String getDescriminator() {
+		return descriminator;
+	}
 
-  public DBObject getDocument() {
-    final BasicDBObject filter = new BasicDBObject();
-    filter.put("descriminator", this.descriminator);
-    filter.put("collection", collection);
-    filter.put("property", property);
-    filter.put("value", value);
-    
-    return filter;
-  }
+	public void setDescriminator(String id) {
+		descriminator = id;
+	}
+
+	public String getCollection() {
+		return collection;
+	}
+
+	public void setCollection(String collection) {
+		this.collection = collection;
+	}
+
+	public String getProperty() {
+		return property;
+	}
+
+	public void setProperty(String property) {
+		this.property = property;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+
+	public String getType() {
+		return type;
+	}
+
+	/**
+	 * 
+	 * @param index		which property to return
+	 * 					bubble filter can only have index 0 or 1
+	 * @return
+	 */
+	public String getBubbleProperty(int index) {
+		if(type.equals("null") || (index > 1)) {
+			return null;
+		}
+		return properties.get(index).getKey();
+	}
+
+	/**
+	 * 
+	 * @param index		which value to return
+	 * 					bubble filter can only have index 0 or 1
+	 * @return
+	 */
+	public String getBubbleValue(int index) {
+		if(type.equals("null") || (index > 1)) {
+			return null;
+		}
+		return properties.get(index).getValue();
+	}
+
+	public void setBubbleValue(int index, String value) {
+		properties.get(index).setValue(value);
+	}
+
+
+	public DBObject getDocument() {
+		if(type == null) {
+			return null;
+		}
+		final BasicDBObject filter = new BasicDBObject();
+		filter.put("type", type);
+		filter.put("descriminator", descriminator);
+		filter.put("collection", collection);
+
+		if(type.equals("null")) {
+			filter.put("property", property);
+			filter.put("value", value);
+		}
+		else {
+			for(int i=0; i<properties.size(); i++) {
+				filter.put("property" + i, properties.get(i).getKey());
+				filter.put("value" + i, properties.get(i).getValue());
+			}
+		}
+
+		return filter;
+	}
+
 }

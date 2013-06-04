@@ -118,6 +118,42 @@ public class FilterController extends Controller {
 
     return badRequest("No filter was found in the session\n");
   }
+  
+  public static Result addBubbleFilter() {
+	    Logger.debug("in method addBubbleFilter(), adding new bubble filter");
+	    Filter filter = Application.getFilterFromSession();
+
+	    if (filter != null) {
+	      final DynamicForm form = form().bindFromRequest();
+	      final String f1 = form.get("property1");
+	      final String f2 = form.get("property2");
+	      final String v1 = form.get("value1");
+	      final String v2 = form.get("value2");
+	      final String t = form.get("type");
+	      final String a = form.get("alg");
+	      final String w = form.get("width");
+	      
+
+	      if (t == null || t.equals("normal")) {
+	          return addFromFilter(filter, f1, v1);
+	        } else if (t.equals("graph")) {
+	          int value = Integer.parseInt(v1);
+
+	          return addFromGraph(filter, f1, value, a, w);
+	        }
+	      /*
+	      if (t == null || t.equals("normal")) {
+	        return addFromBubbleFilter(filter, f1, v1, f2, v2);
+	      } else if (t.equals("graph")) {
+	    	  // TODO distinguish between both property types
+	        //int value1 = Integer.parseInt(v1);
+	        //return addFromBubbleGraph(filter, f1, value, a, w);
+	    	  return null;
+	      }*/
+	    }
+
+	    return badRequest("No filter was found in the session\n");
+  }
 
   private static Result addFromFilter(Filter filter, String f, String v) {
     Logger.debug("in method addFromFilter(), adding new filter with property '" + f + "' and value '" + v + "'");
@@ -129,6 +165,9 @@ public class FilterController extends Controller {
     boolean existing = false;
     while (cursor.hasNext()) {
       Filter tmp = DataHelper.parseFilter(cursor.next());
+      if(tmp.getType() != null && tmp.getType().equals("bubblefilter")) {
+		  continue;
+	  }
       if (tmp.getProperty() != null && tmp.getProperty().equals(f)) {
         Logger.debug("Filter is already present, changing value");
         p.getDB().getCollection(Constants.TBL_FILTERS).remove(tmp.getDocument());
@@ -150,6 +189,49 @@ public class FilterController extends Controller {
     return ok();
 
   }
+  
+  private static Result addFromBubbleFilter(Filter filter, String f1, String v1, String f2, String v2) {
+	    Logger.debug("in method addFromBubbleFilter(), adding new filter with properties '" + f1 + "," + f2 + "' and values '" + v1 + "," + v2 + "'");
+	    PersistenceLayer p = Configurator.getDefaultConfigurator().getPersistence();
+
+	    BasicDBObject ref = new BasicDBObject("descriminator", filter.getDescriminator());
+	    ref.put("collection", filter.getCollection());
+	    DBCursor cursor = Configurator.getDefaultConfigurator().getPersistence().find(Constants.TBL_FILTERS, ref);
+	    boolean existing = false;
+	    while (cursor.hasNext()) {
+	      Filter tmp = DataHelper.parseFilter(cursor.next());
+    	  if(tmp.getType() != null && !tmp.getType().equals("bubblefilter")) {
+    		  continue;
+    	  }
+    	  
+    	  String p1 = tmp.getBubbleProperty(0);
+    	  String p2 = tmp.getBubbleProperty(1);
+    	  
+    	  if(p1 != null && p2 != null) {
+    		  if( (p1.equals(f1) && p2.equals(f2)) || (p2.equals(f1) && p1.equals(f2)) ) {
+    			  Logger.debug("Filter is already present, changing value");
+    		      p.getDB().getCollection(Constants.TBL_FILTERS).remove(tmp.getDocument());
+    		        
+    			  tmp.setBubbleValue(0, tmp.getBubbleValue(0));
+    			  tmp.setBubbleValue(1, tmp.getBubbleValue(1));
+    			  
+    			  p.insert(Constants.TBL_FILTERS, tmp.getDocument());
+			      existing = true;
+			      break;
+    		  }
+    	  }
+	    }
+
+	    if (!existing) {
+	      Logger.info("Filtering based on new filter: " + filter + " " + v1);
+	      Filter newFilter = new Filter(filter.getCollection(), f1, v1, f2, v2);
+	      newFilter.setDescriminator(filter.getDescriminator());
+	      p.insert(Constants.TBL_FILTERS, newFilter.getDocument());
+	    }
+
+	    return ok();
+
+	  }
 
   private static Result addFromGraph(Filter filter, String f, int value, String alg, String width) {
     Logger.debug("in method addFromGraph(), adding new filter with property '" + f.toString() + "' and position value '" + value
@@ -171,6 +253,14 @@ public class FilterController extends Controller {
 
     return addFromFilter(filter, f, filtervalue);
   }
+  
+  // TODO
+  private static Result addFromBubbleGraph(Filter filter, String f1, int val1, String f2, int val2, String alg, String width) {
+	  	String v1 = null;
+	  	String v2 = null;
+	    return null;
+	  	//return addFromBubbleFilter(filter, f1, v1, f2, v2);
+    }
 
   public static Result getValues() {
     Logger.debug("in method getValues(), retrieving values for selected property");

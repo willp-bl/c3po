@@ -304,8 +304,10 @@ function addNewPropertiesSelect(properties, bubbleChart) {
 		// if the select is clicked then get the values for the current
 		// option.
 		$(sel).add(sel2).change(function() {
+			var loadBubbleChart = false;
 			var property = $(this).val();
 			var divID = $(this).parent();
+			
 			if (property) {
 				var old = $(this).parent().attr('oldValue');
 				$(this).parent().attr('oldValue', property);
@@ -339,7 +341,7 @@ function addNewPropertiesSelect(properties, bubbleChart) {
 
 						} else { 
 							//showOtherProperty(url, div2); 
-							showOtherProperty(url, divID); 
+							showOtherProperty(url, divID, bubbleChart, sel, sel2); 
 						}	    
 					}
 				});
@@ -360,18 +362,18 @@ function addNewPropertiesSelect(properties, bubbleChart) {
 	}
 };
 
-function showOtherProperty(url, div) {
+function showOtherProperty(url, div, bubbleChart, sel, sel2) {
 	$.ajax ({
 		type:     'GET',
 		url:      url,
 		timeout:  5000,
 		success:  function (oData) {
-			showValuesSelect(div, oData);
+			showValuesSelect(div, oData, bubbleChart, sel, sel2);
 		}
 	});
 }
 
-function showValuesSelect(filterdiv, pvf) {
+function showValuesSelect(filterdiv, pvf, bubbleChart, sel1, sel2) {
 	// first remove filtervalues if property was already selected
 	if ($(filterdiv).children('select').length > 1) {
 		($(filterdiv).children('select:last')).remove();
@@ -390,10 +392,41 @@ function showValuesSelect(filterdiv, pvf) {
 		var value = $(this).val();
 
 		if (value) {
-			startSpinner();
-			$.post('/c3po/filter?filter=' + pvf.property + '&value='+value + '&type=normal', function(data) {
-				window.location.reload();
-			});
+
+			if(bubbleChart) {
+				// only load data if both bubble chart properties are selected
+				var prop1 = $(sel1).val();
+				var prop2 = $(sel2).val();
+				
+				if(prop1 && prop2 && (prop1 != prop2)) {
+					
+					var filterVal1 = $(sel1).next().val();
+					var filterVal2 = $(sel2).next().val();
+					
+					if(filterVal1 && filterVal2) {
+						startSpinner();
+						
+						$.post('/c3po/bubblefilter?property1=' + prop1 + 
+								'&property2=' + prop2 + 
+								'&value1=' + filterVal1 + 
+								'&value2=' + filterVal2 + 
+								'&type=normal', function(data) {
+							window.location.reload();
+						});
+
+					}
+					
+				}
+			}
+			
+			else {
+				startSpinner();
+				$.post('/c3po/filter?filter=' + pvf.property + '&value='+value + '&type=normal', function(data) {
+					window.location.reload();
+				});
+			}
+
+			
 		} else {
 			$(sel).effect("highlight", {color:'#FF1400'} , "slow");
 		}
