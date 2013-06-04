@@ -56,7 +56,7 @@ public class BubbleChartJobTest {
 
 	@Test
 	public void BubbleChartPropertiesStringNumericTest() {
-		BubbleChartJob job = new BubbleChartJob("test", "format", "size");
+		BubbleChartJob job = new BubbleChartJob("test", "fnumber", "pagecount");
 		job.getConfig().put("bin_width", "500000");
 		MapReduceOutput output = job.execute();
 		

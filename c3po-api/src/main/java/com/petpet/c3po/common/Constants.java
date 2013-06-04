@@ -173,7 +173,8 @@ public final class Constants {
   		"    result.separator = value1.length;\n" +
   		"    emit(key, result);\n" +
   		"  } else {\n" +
-  		"    emit('Unknown', result);\n" +
+  		"    result.separator = 'Unknown'.length; \n" + 	
+  		"    emit('Unknown" + BUBBLECHART_KEY_SEP + "Unknown', result);\n" +
   		"  }\n" +
   		"}";
 
@@ -184,7 +185,8 @@ public final class Constants {
    * before use replace "{1}" with the property id
    */
   public static final String BUBBLECHART_MAP_CONVERT_STRING = 
-		  "this.metadata['{1}'].value";
+		  "this.metadata['{1}'].value !== null ? " +
+		  "this.metadata['{1}'].value : 'Unknown'" ;
   
   /**
    * convert part for the map-reduce of {@link Constants#BUBBLECHART_MAP}
@@ -195,7 +197,8 @@ public final class Constants {
    * before use replace "{1}" with the property id
    */
   public static final String BUBBLECHART_MAP_CONVERT_DATE = 
-		  BUBBLECHART_MAP_CONVERT_STRING + ".getFullYear().toString()";
+		  "this.metadata['{1}'].value !== null ? " +
+		  "this.metadata['{1}'].value.getFullYear().toString() : 'Unknown'" ;
   
   /**
    * convert part for the map-reduce of {@link Constants#BUBBLECHART_MAP}
@@ -206,7 +209,8 @@ public final class Constants {
    * before use replace "{1}" with the property id and "{2}" with the bin width
    */
   public static final String BUBBLECHART_MAP_CONVERT_NUMERIC = 
-		  "Math.floor(" + BUBBLECHART_MAP_CONVERT_STRING + " / {2}).toString()";
+		  "this.metadata['{1}'].value !== null ? " +
+		  "Math.floor(this.metadata['{1}'].value / {2}).toString() : 'Unknown'";
   
   /**
    * this is the reduce function for the bubblechart map-reduce data fetching
