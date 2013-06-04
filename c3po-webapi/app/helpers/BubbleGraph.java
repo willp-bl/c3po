@@ -19,6 +19,8 @@ import com.petpet.c3po.utils.Configurator;
 
 public class BubbleGraph implements BaseGraph {
 
+	private static final String DEFAULT_DUMMY_VALUE = "Unknown";
+	
 	private String property1;
 	private String property2;
 	
@@ -44,24 +46,34 @@ public class BubbleGraph implements BaseGraph {
 		keyMap1 = new HashMap<String, Integer>();
 		keyMap2 = new HashMap<String, Integer>();
 		
-		for (DBObject obj : results) {
-//			String key = obj.getString("_id");
-			BasicDBObject value = (BasicDBObject) obj.get("value");
-			
-			values.add(value.getLong("count"));
-			String key1 = value.getString("value1");
-			String key2 = value.getString("value2");
-			
-			keys1.add(key1);
-			keys2.add(key2);
-//			int separator = value.getInt("separator");
-			
-			if (keyMap1.get(key1) == null) {
-				keyMap1.put(key1, keyMap1.size());
-			}
-			
-			if (keyMap2.get(key2) == null) {
-				keyMap2.put(key2, keyMap2.size());
+		if (results.isEmpty()) {
+			Logger.info("results is empty, using dummy values");
+			keys1.add(DEFAULT_DUMMY_VALUE);
+			keys2.add(DEFAULT_DUMMY_VALUE);
+			values.add(-1L);
+			keyMap1.put(DEFAULT_DUMMY_VALUE, 0);
+			keyMap2.put(DEFAULT_DUMMY_VALUE, 0);
+		} else {
+		
+			for (DBObject obj : results) {
+	//			String key = obj.getString("_id");
+				BasicDBObject value = (BasicDBObject) obj.get("value");
+				
+				values.add(value.getLong("count"));
+				String key1 = value.getString("value1");
+				String key2 = value.getString("value2");
+				
+				keys1.add(key1);
+				keys2.add(key2);
+	//			int separator = value.getInt("separator");
+				
+				if (keyMap1.get(key1) == null) {
+					keyMap1.put(key1, keyMap1.size());
+				}
+				
+				if (keyMap2.get(key2) == null) {
+					keyMap2.put(key2, keyMap2.size());
+				}
 			}
 		}
 	}
