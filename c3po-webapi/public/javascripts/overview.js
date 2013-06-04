@@ -269,7 +269,11 @@ function applyIntegerHistogramSelection() {
 			});
 			var id = oData.property;
 			var data = {};
-			data[id] = hist;
+			data[id] = {
+            	         type: 'histogram',
+            	         data: hist,
+            	         options: null
+	         			};
 			$('#' + id).remove(); // remove the old graph if exist
 			drawGraphs(data, oData.options);
 			stopSpinner();
