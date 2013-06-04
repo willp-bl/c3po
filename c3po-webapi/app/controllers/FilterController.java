@@ -38,6 +38,8 @@ import com.petpet.c3po.utils.DataHelper;
 
 public class FilterController extends Controller {
 
+  private static final int DEFAULT_BIN_WIDTH = 50;	
+	
   /**
    * Gets all selected filters and returns them to the client, so that it can
    * reconstruct the page.
@@ -407,14 +409,22 @@ public class FilterController extends Controller {
     // because of sd^2
     return stats;
   }
+  
+  public static BubbleGraph getBubbleGraph(Filter filter, String property1, 
+		  String property2) {
+	  return getBubbleGraph(filter, property1, property2, null, null, null, null);
+  }
 
-  public static BubbleGraph getBubbleGraph(String property1, String property2) {
+  public static BubbleGraph getBubbleGraph(String property1, String property2,
+		  String alg1, String width1, String alg2, String width2) {
+	  
 	Filter filter = Application.getFilterFromSession();
-	return getBubbleGraph(filter, property1, property2);
+	return getBubbleGraph(filter, property1, property2, alg1, width1, alg2, width2);
   }
   
   public static BubbleGraph getBubbleGraph(Filter filter, 
-		  String property1, String property2) {
+		  String property1, String property2,
+		  String alg1, String width1, String alg2, String width2) {
 	if (filter == null)
 		return null;
 	
@@ -425,8 +435,15 @@ public class FilterController extends Controller {
     DBCursor cursor = Configurator.getDefaultConfigurator()
     		.getPersistence().find(Constants.TBL_FILTERS, ref);
     
+    int bin_width1 = getBinWidth(filter, property1, alg1, width1);
+    Logger.debug("got bin_width 1: " + Integer.toString(bin_width1));
+    int bin_width2 = getBinWidth(filter, property2, alg2, width2);
+    Logger.debug("got bin_width 2: " + Integer.toString(bin_width2));
+    
+    
     List<? extends DBObject> graphData;
-    if (cursor.count() == 1) { // only root filter
+    if (cursor.count() == 1 &&	// only root filter
+    		bin_width1 == -1 && bin_width2 == -1) {	// numeric porperties selected 
       // use cached values
       Logger.info("getBubbleChart: no filter, use cached values");
       final PersistenceLayer p = Configurator.getDefaultConfigurator().getPersistence();
@@ -447,9 +464,13 @@ public class FilterController extends Controller {
 	  
     } else {
       // apply filter query
-      Logger.info("getBubbleChart: filter active, can not use cache");
+      Logger.info("getBubbleChart: filter active or numeric properties " + 
+    		  "selected, can not use cache");
+      
       final MapReduceJob job = new BubbleChartJob(filter.getCollection(), 
     		  property1, property2, Application.getFilterQuery(filter));
+      job.getConfig().put("bin_width_" + property1, Integer.toString(bin_width1));
+      job.getConfig().put("bin_width_" + property2, Integer.toString(bin_width2));
       graphData = job.run().getResults();
     }
     
@@ -459,7 +480,7 @@ public class FilterController extends Controller {
 	return g;
   }
   
-  
+   
   private static Graph getOrdinalGraph(Filter filter, String property) {
     Graph g = null;
     if (filter != null) {
@@ -484,11 +505,12 @@ public class FilterController extends Controller {
     // map reduce this property based on the classes...
     Graph g = null;
     if (alg.equals("fixed")) {
-      int width = 50;
+      int width = DEFAULT_BIN_WIDTH;
       try {
         width = Integer.parseInt(w);
       } catch (NumberFormatException e) {
-        Logger.warn("Not a number, using default bin width: 50");
+        Logger.warn("Not a number, using default bin width: " 
+        		+ Integer.toString(DEFAULT_BIN_WIDTH));
       }
 
       g = getFixedWidthHistogram(filter, property, width);
@@ -510,7 +532,86 @@ public class FilterController extends Controller {
     
     return g;
   }
+  
+  private static int getBinWidth(Filter filter, String propertyName, 
+		  String algo, String width) {
+	  
+	int result = -1;
+	int bins = -1;
+	long max = -1;
+	int n = -1;
+	
+	PersistenceLayer p = Configurator.getDefaultConfigurator().getPersistence();
+    Property property = p.getCache().getProperty(propertyName);
+    
+    if (! property.getType().equals(PropertyType.INTEGER.name()) &&
+    		! property.getType().equals(PropertyType.FLOAT.name())) {
+      return -1;	// bin width only useful for numeric properties
+    }
+	
+	BasicDBObject aggregation;
+	if (algo == null) {
+		Logger.error("no algorithm for numeric property specified, using default bin width of "
+				+ Integer.toString(DEFAULT_BIN_WIDTH));
+		return DEFAULT_BIN_WIDTH;
+	}
+	
+	switch (algo) {
+	case "fixed":
+	  try {
+		  result = Integer.parseInt(width);
+	  } catch (NumberFormatException e) {
+		  Logger.error("given width '" + width + "' does not seem to be a " + 
+				  "valid number. using default value " + 
+				  Integer.toString(DEFAULT_BIN_WIDTH));
+	  }
+	  break;
+		  
+	case "sqrt":
+	  n = getTotalNumberOfElements(filter);
+	  bins = (int) Math.sqrt(n);
+	  aggregation = getNumericAggregationResult(filter, propertyName);
+	  max = aggregation.getLong("max");
+      result = (int) (max / bins);
+	  break;
+		  
+	case "sturge":
+	  n = getTotalNumberOfElements(filter);
+	  bins = (int) ((Math.log(n) / Math.log(2)) + 1);
+	  aggregation = getNumericAggregationResult(filter, propertyName);
+	  max = aggregation.getLong("max");
+      result = (int) (max / bins);
+	  break;
+		  
+	default:
+		Logger.error("unknown algorithm for numeric porperty, using default bin width of " 
+				+ Integer.toString(DEFAULT_BIN_WIDTH));
+		result = DEFAULT_BIN_WIDTH;
+	}
+	  
+	return result;
+  }
+  
+  private static int getTotalNumberOfElements(Filter filter) {
+	 BasicDBObject query = Application.getFilterQuery(filter);
+	 DBCursor cursor = Configurator.getDefaultConfigurator().getPersistence()
+			 .find(Constants.TBL_ELEMENTS, query);
+	 return cursor.size();
+  }
 
+  private static BasicDBObject getNumericAggregationResult(Filter filter, 
+		  String property) {
+	BasicDBObject query = Application.getFilterQuery(filter);
+	MapReduceJob job = new NumericAggregationJob(filter.getCollection(), property);
+	job.setFilterquery(query);
+
+	JobResult res = job.run();
+	if (res.getResults().isEmpty())
+		return null;
+	
+	return (BasicDBObject) res.getResults().get(0).get("value");
+  }
+  
   private static Graph getFixedWidthHistogram(Filter filter, String property, int width) {
     BasicDBObject query = Application.getFilterQuery(filter);
     MapReduceJob job = new NumericAggregationJob(filter.getCollection(), property);

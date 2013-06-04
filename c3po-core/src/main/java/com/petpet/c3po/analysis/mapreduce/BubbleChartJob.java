@@ -89,8 +89,10 @@ public class BubbleChartJob extends MapReduceJob {
 	    		   || p.getType().equals(PropertyType.FLOAT.toString())) {
 		  
 
-		  String width = this.getConfig().get("bin_width");
-
+		  String width = this.getConfig().get("bin_width_" + p.getId());
+		  if (width == null)
+			  width = this.getConfig().get("bin_width");
+		  
 		  if (width == null) {
 			  String val = (String) this.getFilterquery()
 	    				.get("metadata." + p.getId() + ".value");

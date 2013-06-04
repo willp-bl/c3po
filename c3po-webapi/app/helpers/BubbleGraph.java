@@ -73,9 +73,13 @@ public class BubbleGraph implements BaseGraph {
 	@Override
 	public String getGraphData() {
 		StringBuilder res = new StringBuilder();
-		res.append("[\n");
-		
+		res.append("[");
+		boolean first = true;
 		for (int i = 0; i < keys1.size(); i++) {
+			if (first)
+				first = false;
+			else
+				res.append(", ");
 			res.append("[");
 			res.append(keyMap1.get(keys1.get(i)));
 			res.append(", ");
@@ -84,9 +88,9 @@ public class BubbleGraph implements BaseGraph {
 			res.append(values.get(i));
 			res.append(", '");
 			res.append(keys1.get(i) + " - " + keys2.get(i));
-			res.append("'], \n");
+			res.append("']");
 		}
-		res.append("]\n");
+		res.append("]");
 		return res.toString();
 	}
 
@@ -94,17 +98,17 @@ public class BubbleGraph implements BaseGraph {
 	@Override
 	public String getGraphOptions() {
 		StringBuilder res = new StringBuilder();
-		res.append("{\n");
+		res.append("{");
 		
-		res.append("keymap1: ");
+		res.append(" 'keymap1': ");
 		res.append(getKeyMapArray(keyMap1));
-		res.append(", \n");
+		res.append(", ");
 		
-		res.append("keymap2: ");
+		res.append(" 'keymap2': ");
 		res.append(getKeyMapArray(keyMap2));
-		res.append("\n");
+		res.append("");
 		
-		res.append("}\n");
+		res.append("}");
 		return res.toString();
 	}
 	
@@ -112,8 +116,13 @@ public class BubbleGraph implements BaseGraph {
 	private String getKeyMapArray(Map<String, Integer> map) {
 		StringBuilder res = new StringBuilder();
 		res.append("[");
+		boolean first = true;
 		for (String key : map.keySet()) {
-			res.append("'" + key + "', ");  
+			if (first)
+				first = false;
+			else
+				res.append(", ");
+			res.append("'" + key + "'");  
 		}
 		res.append("]");
 		return res.toString();
