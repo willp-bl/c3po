@@ -80,11 +80,11 @@ public class BubbleGraph implements BaseGraph {
 				first = false;
 			else
 				res.append(", ");
-			res.append("[");
-			res.append(keyMap1.get(keys1.get(i)));
-			res.append(", ");
-			res.append(keyMap2.get(keys2.get(i)));
-			res.append(", ");
+			res.append("['");
+			res.append(keys1.get(i));
+			res.append("', '");
+			res.append(keys2.get(i));
+			res.append("', ");
 			res.append(values.get(i));
 			res.append(", '");
 			res.append(keys1.get(i) + " - " + keys2.get(i));

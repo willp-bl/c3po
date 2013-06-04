@@ -393,6 +393,27 @@ function getBubbleChart(ttl) {
 		           shadowAlpha : 0.05,
 		           
 			},
+			axesDefaults : {
+				tickRenderer : $.jqplot.CanvasAxisTickRenderer,
+				tickOptions : {
+					angle : -30,
+					fontSize : '8pt',
+        			formatter : function(format, val) {
+        				if (val.length > 30) {
+        					val = val.substring(0, 25) + '...';
+        				}
+        				return val;
+        			}
+				}
+			},
+			axes : {
+				xaxis : {
+					renderer: $.jqplot.CategoryAxisRenderer,
+				},
+				yaxis : {
+					renderer: $.jqplot.CategoryAxisRenderer,
+				}
+			},			
 			highlighter : {
 				show : true,
 				tooltipLocation : 'n',
