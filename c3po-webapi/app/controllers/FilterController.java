@@ -566,8 +566,10 @@ public class FilterController extends Controller {
     
     g = new BubbleGraph(property1, property2);
     g.setFromMapReduceJob(graphData);
-	
-	return g;
+    g.sort();
+    g.convertNumericKeysToIntervals(bin_width1, bin_width2);
+
+    return g;
   }
   
    
