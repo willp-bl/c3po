@@ -691,6 +691,8 @@ public class FilterController extends Controller {
 	  n = getTotalNumberOfElements(filter);
 	  bins = (int) Math.sqrt(n);
 	  aggregation = getNumericAggregationResult(filter, propertyName);
+	  if (aggregation == null)
+		  return -1;
 	  max = aggregation.getLong("max");
       result = (int) (max / bins);
 	  break;
@@ -699,6 +701,8 @@ public class FilterController extends Controller {
 	  n = getTotalNumberOfElements(filter);
 	  bins = (int) ((Math.log(n) / Math.log(2)) + 1);
 	  aggregation = getNumericAggregationResult(filter, propertyName);
+	  if (aggregation == null)
+		  return -1;
 	  max = aggregation.getLong("max");
       result = (int) (max / bins);
 	  break;
