@@ -433,7 +433,7 @@ function getBubbleChart(ttl) {
 				show : true,
 				showTooltip : false,
 				useAxesFormatters : true,
-			},
+			},/*
 			axes : {
 				xaxis : {
 					autoscale: true,
@@ -441,7 +441,7 @@ function getBubbleChart(ttl) {
 				yaxis : {
 					autoscale : true,
 				}
-			}
+			}*/
 		};
 		return options;
 }
