@@ -75,14 +75,21 @@ function showBubbleChartPopup(properties) {
 	popup.children('.popupreason').text('Please select a property pair.');
 	var config = popup.children('.popupconfig');
 
-	var sel = $('<select id="prop1">').appendTo($(config));
+	// property 1 selection
+	var row1 = $('<div />').appendTo($(config));
+	
+	var sel = $('<select id="prop1">').appendTo($(row1));
 	$(sel).append($('<option>').text("").attr('value', ''));
 	$.each(properties, function(i, value) {
 		$(sel).append($('<option>').text(value).attr('value', value));
 	});
 
+	$(config).append($('<br />'));
 
-	var sel2 = $('<select id="prop2">').appendTo($(config));
+	// property 2 selection
+	var row2 = $('<div />').appendTo($(config));
+
+	var sel2 = $('<select id="prop2">').appendTo($(row2));
 	$(sel2).append($('<option>').text("").attr('value', ''));
 	$.each(properties, function(i, value) {
 		$(sel2).append($('<option>').text(value).attr('value', value));
@@ -94,34 +101,106 @@ function showBubbleChartPopup(properties) {
 	});
 
 
+	// TODO ALEX change to automatically generated ids for more property pairs
+	// on change of one property select
 	$('.popupconfig select').change(function() {
-		var value1 = $('#prop1').val();
-		var value2 = $('#prop2').val();
-		if(value1 && value2 && (value1 != value2)) {
-			//alert("success");
+		var select = $(this);
+		var value = $(select).val();
+		// build ids 
+		var thisId = $(select).attr("id");
+		var algId = thisId + "_alg";
+		var widthId = thisId + "_width";
+		// reset selction 
+		$(select).removeData();	// remove stored values
+		$('#' + algId).remove();
+		$('#' + widthId).remove();
+		
+		if (value) {
+			// get property (name, type...)
+
 			$.ajax({
 				type : 'GET',
-				url : '/c3po/overview/bubblegraph?' + 
-						'property1=' + $('.popupconfig #prop1').val() +
-						'&property2=' + $('.popupconfig #prop2').val(),
+				url : '/c3po/property?name=' + value,
 				timeout : 5000,
 				success : function(oData) {
-					hidePopupDialog();
-					
-					//drawBubbleChart("title");
-					var data = {};
-					data[oData.title] = {
-					                     type: oData.type,
-					                     data: oData.graphData,
-					                     options: oData.graphOptions
-					                     };
-					
-					drawGraphs(data);
-					
+					// show width method and selection if this is a numeric property
+					$(select).data('type', oData.type);
+					if (oData.type == "INTEGER" || oData.type == "FLOAT") {
+    					$(select).parent().append($(
+    						'<select id=\"' + algId + '\"><option/><option value="fixed">fixed</option><option value="sturge">Sturge\'s</option><option value="sqrt">Square-root choice</option></select>'));
+					}
+					$('#' + algId).change(function() {
+						$(select).data('alg', $(this).val());
+						if ($(this).val() == "fixed") {
+							$('#' + algId).parent().append($('<input id=\"' + widthId + '\" type="text" placeholder="bin width" />'));
+						}
+					});
 				}
 			});
 		}
 	});
+	
+	$(config).append($('<br />'));
+	$(config).append($('<br />'));
+
+	// apply button
+	var row3 = $('<div align="right" style="padding-right: 3em;" />').appendTo($(config));
+	var apply = $('<a class="green_button" href="#" >apply</a>').appendTo($(row3));
+	apply.click(function() {
+		// input validation
+		if ($('#prop1').val() == $('#prop2').val()) {
+			alert("please select different properties");
+			return;
+		}
+		
+		// build url and check input values
+		var url = "/c3po/overview/bubblegraph?";
+		for (var i = 1; i <= 2; i++) {
+    		var type = $('#prop' + i).data('type');
+    		if (!type) {
+    			alert("no value for property " + i + " selected");
+    			return;
+    		}
+    		url += "property" + i + "=" + $('#prop' + i).val();
+    		if (type == "INTEGER" || type == "FLOAT") {
+    			var alg = $('#prop' + i).data('alg');
+    			if (!alg) {
+    				alert("no bin width method selected for numeric property " + i);
+    				return;
+    			}
+    			url += "&alg" + i + "=" + alg;
+    			if (alg == "fixed") {
+    				var width = $('#prop' + i + '_width').val();
+    				if (!$.isNumeric(width)) {
+    					alert("given bin width for numeric property " + i + " is not a valid number");
+    					return;
+    				}
+    				url += "&width" + i + "=" + width;
+    			}
+    		}
+    		url += "&";
+		}
+		
+		// we have all needed values, do the graph fetching
+		startSpinner();
+		$.ajax({
+			type : 'GET',
+			url : url,
+			timeout : 5000,
+			success : function(oData) {
+				hidePopupDialog();
+    			var data = {};
+    			data[oData.title] = {
+    			                     type: oData.type,
+    			                     data: oData.graphData,
+    			                     options: oData.graphOptions
+    			                     };
+    			
+    			drawGraphs(data);
+    			stopSpinner();
+    		} // end success function
+    	}); // end ajax call
+	}); // end apply.click 
 
 };
 

@@ -9,9 +9,13 @@ import helpers.Statistics;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.codehaus.jackson.node.ObjectNode;
+
 import net.sf.ehcache.search.Results;
 
 import play.Logger;
+import play.data.DynamicForm;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.overview;
@@ -78,9 +82,27 @@ public class Overview extends Controller {
   }
   
   public static Result getBubbleGraph(String property1, String property2) {
-	BaseGraph g = FilterController.getBubbleGraph(property1, property2);
+	DynamicForm form = form().bindFromRequest();
+	String alg1 = form.get("alg1");
+	String width1 = form.get("width1");
+	String alg2 = form.get("alg2");
+	String width2 = form.get("width2");
+	  
+	BaseGraph g = FilterController.getBubbleGraph(property1, property2,
+			alg1, width1, alg2, width2);
     response().setContentType("application/json");
-	return ok(play.libs.Json.toJson(g));
+    
+    if (g == null)
+    	return noContent();
+    
+    ObjectNode result = Json.newObject();
+    result.put("type", g.getType());
+    result.put("title", g.getTitle());
+    // for some reason this parser doesn't like ', so convert it to "
+    result.put("graphData", Json.parse(g.getGraphData().replace("'", "\"")));
+    result.put("graphOptions", Json.parse(g.getGraphOptions()
+    		.replace("'", "\"")));
+	return ok(result);
   }
 
   private static GraphData getDefaultGraphs(Filter f, boolean root) {
