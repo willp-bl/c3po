@@ -473,6 +473,7 @@ function drawGraphs(data, options) {
 			idx++; // if full length skip to next row left
 		}
 
+   	    $('#' + i).remove(); // remove old graph, it it exists
 		container.append('<div id="' + i + '" class="' + clazz + '">');
 		$('#' + i).bind(
 				'jqplotDataClick',
@@ -501,8 +502,31 @@ function drawGraphs(data, options) {
 		if (d.type == "histogram") {		
 		  $.jqplot(i, [ d.data ], getBarChart(prettifyTitle(i)));
 		} else if (d.type == "bubblechart") {
+		  // remove old tooltip if exists
+		  $('#tooltip' + i).remove();
 		  // draw a bubble chart
-		  $.jqplot(i, [ d.data ], getBubbleChart(prettifyTitle(i)));
+		  var plot = $.jqplot(i, [ d.data ], getBubbleChart(prettifyTitle(i)));
+		  // draw a tool tip to display the data
+		  // (stolen from http://www.jqplot.com/deploy/dist/examples/bubbleChart.html)
+		  $('#' + i).parent().append('<div style="position:absolute;z-index:99;display:none;background-color:#fff;padding:0.5em" id="tooltip' + i + '"></div>');
+		  $('#' + i).bind('jqplotDataHighlight',
+		        function (ev, seriesIndex, pointIndex, data, radius) {   
+		            var chart_left = $('#' + i).offset().left,
+		                chart_top = $('#' + i).offset().top,
+		                x = plot.axes.xaxis.u2p(data[0]),  // convert x axis unita to pixels on grid
+		                y = plot.axes.yaxis.u2p(data[1]);  // convert y axis units to pixels on grid
+		            $('#tooltip' + i).css({left:chart_left+x+radius+5, top:chart_top+y});
+		            $('#tooltip' + i).html('<span style="font-size:14px;font-weight:bold;color:#639B00;">' +
+		            data[3] + '</span><br />' + 'count: ' + data[2]);
+		            $('#tooltip' + i).show();
+		        });
+		     
+		    // Bind a function to the unhighlight event to clean up after highlighting.
+		    $('#' + i).bind('jqplotDataUnhighlight',
+		        function (ev, seriesIndex, pointIndex, data) {
+		            $('#tooltip' + i).empty();
+		            $('#tooltip' + i).hide();
+		        });		  
 		}
 
 		if (idx == 0) {
