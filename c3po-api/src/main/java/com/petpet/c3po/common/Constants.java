@@ -195,7 +195,7 @@ public final class Constants {
    * before use replace "{1}" with the property id
    */
   public static final String BUBBLECHART_MAP_CONVERT_DATE = 
-		  BUBBLECHART_MAP_CONVERT_STRING + ".getFullYear()";
+		  BUBBLECHART_MAP_CONVERT_STRING + ".getFullYear().toString()";
   
   /**
    * convert part for the map-reduce of {@link Constants#BUBBLECHART_MAP}
@@ -206,7 +206,7 @@ public final class Constants {
    * before use replace "{1}" with the property id and "{2}" with the bin width
    */
   public static final String BUBBLECHART_MAP_CONVERT_NUMERIC = 
-		  "Math.floor(" + BUBBLECHART_MAP_CONVERT_STRING + " / {2})";
+		  "Math.floor(" + BUBBLECHART_MAP_CONVERT_STRING + " / {2}).toString()";
   
   /**
    * this is the reduce function for the bubblechart map-reduce data fetching
