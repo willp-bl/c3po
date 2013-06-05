@@ -189,8 +189,13 @@ public class Application extends Controller {
     if (f != null) {
       BasicDBObject fQuery = new BasicDBObject("descriminator", f);
       fQuery.put("collection", c);
-      fQuery.put("property", null);
-      fQuery.put("value", null);
+	      fQuery.put("property0", null);
+	      fQuery.put("value0", null);
+	      fQuery.put("property1", null);
+	      fQuery.put("value1", null);
+    	  fQuery.put("property", null);
+    	  fQuery.put("value", null);
+      
       DBCursor cursor = pl.find(Constants.TBL_FILTERS, fQuery);
       if (cursor.count() == 1) {
         Filter filter = DataHelper.parseFilter(cursor.next());
@@ -200,9 +205,9 @@ public class Application extends Controller {
         throw new RuntimeException("Found more than one filters with the same id");
       }
     }
-
     return null;
   }
+
 
   public static BasicDBObject getFilterQuery(Filter filter) {
     return DataHelper.getFilterQuery(filter);

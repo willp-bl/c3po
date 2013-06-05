@@ -3,6 +3,8 @@ package controllers;
 import helpers.BubbleGraph;
 import helpers.Graph;
 import helpers.PropertyValuesFilter;
+import helpers.FilterHelper;
+import helpers.BubbleFilter;
 import helpers.Statistics;
 
 import java.text.DecimalFormat;
@@ -58,13 +60,32 @@ public class FilterController extends Controller {
 
       while (cursor.hasNext()) {
         Filter tmp = DataHelper.parseFilter(cursor.next());
-        if (tmp.getProperty() != null && tmp.getValue() != null) {
-          final Cache cache = Configurator.getDefaultConfigurator().getPersistence().getCache();
-          final Property property = cache.getProperty(tmp.getProperty());
-          PropertyValuesFilter f = getValues(tmp.getCollection(), property, tmp.getValue());
-
-          f.setSelected(tmp.getValue());
-          filters.add(f);
+        if(tmp.getType() == null || tmp.getType().equals("null")) {
+        	
+	        if (tmp.getProperty() != null && tmp.getValue() != null) {
+	          final Cache cache = Configurator.getDefaultConfigurator().getPersistence().getCache();
+	          final Property property = cache.getProperty(tmp.getProperty());
+	          PropertyValuesFilter f = getValues(tmp.getCollection(), property, tmp.getValue());
+	
+	          f.setSelected(tmp.getValue());
+	          filters.add(f);
+	        }
+        }
+        else {
+        	BubbleFilter bf = new BubbleFilter();
+        	for(int i=0; i<2; i++) {
+        		String p = tmp.getBubbleProperty(i);
+        		String v = tmp.getBubbleValue(i);
+        		if( (p != null) && (v != null) ) {
+        			final Cache cache = Configurator.getDefaultConfigurator().getPersistence().getCache();
+        	          final Property property = cache.getProperty(p);
+        	          PropertyValuesFilter f = getValues(tmp.getCollection(), property, v);
+        	          f.setSelected(v);
+        	          bf.addPropertyValuesFilter(i+1, f);
+        		}
+        	}
+        	// TODO ALEX
+        	//filters.add(bf);
         }
       }
     }
@@ -137,23 +158,15 @@ public class FilterController extends Controller {
 	      
 
 	      if (t == null || t.equals("normal")) {
-	          return addFromFilter(filter, f1, v1);
+	    	  	//return addFromFilter(filter, f1, v1);
+	    	  	return addFromBubbleFilter(filter, f1, v1, f2, v2);
 	        } else if (t.equals("graph")) {
-	          int value = Integer.parseInt(v1);
-
-	          return addFromGraph(filter, f1, value, a, w);
+	        	return addFromBubbleFilter(filter, f1, v1, f2, v2);
+	        	//int value = Integer.parseInt(v1);
+	        	//return addFromGraph(filter, f1, value, a, w);
 	        }
-	      /*
-	      if (t == null || t.equals("normal")) {
-	        return addFromBubbleFilter(filter, f1, v1, f2, v2);
-	      } else if (t.equals("graph")) {
-	    	  // TODO distinguish between both property types
-	        //int value1 = Integer.parseInt(v1);
-	        //return addFromBubbleGraph(filter, f1, value, a, w);
-	    	  return null;
-	      }*/
 	    }
-
+	    
 	    return badRequest("No filter was found in the session\n");
   }
 
@@ -202,7 +215,7 @@ public class FilterController extends Controller {
 	    boolean existing = false;
 	    while (cursor.hasNext()) {
 	      Filter tmp = DataHelper.parseFilter(cursor.next());
-    	  if(tmp.getType() != null && !tmp.getType().equals("bubblefilter")) {
+    	  if(tmp.getType() == null || tmp.getType().equals("null")) {
     		  continue;
     	  }
     	  
@@ -225,12 +238,12 @@ public class FilterController extends Controller {
 	    }
 
 	    if (!existing) {
-	      Logger.info("Filtering based on new filter: " + filter + " " + v1);
+	      Logger.info("Filtering based on new filter: " + f1 + " ," + f2 + "' and values '" + v1 + "," + v2 + "'");
 	      Filter newFilter = new Filter(filter.getCollection(), f1, v1, f2, v2);
 	      newFilter.setDescriminator(filter.getDescriminator());
 	      p.insert(Constants.TBL_FILTERS, newFilter.getDocument());
+	      
 	    }
-
 	    return ok();
 
 	  }
@@ -256,7 +269,7 @@ public class FilterController extends Controller {
     return addFromFilter(filter, f, filtervalue);
   }
   
-  // TODO
+  // TODO ALEX
   private static Result addFromBubbleGraph(Filter filter, String f1, int val1, String f2, int val2, String alg, String width) {
 	  	String v1 = null;
 	  	String v2 = null;

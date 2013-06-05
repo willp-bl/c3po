@@ -56,9 +56,22 @@ public class Overview extends Controller {
         List<String> properties = new ArrayList<String>();
         while (cursor.hasNext()) {
           Filter tmp = DataHelper.parseFilter(cursor.next());
-          if (tmp.getProperty() != null) {
-            properties.add(tmp.getProperty());
+          if (tmp.getType() == null || tmp.getType().equals("null")) {
+        	  if (tmp.getProperty() != null) {
+                  properties.add(tmp.getProperty());
+                }
           }
+          if (tmp.getType().equals("bubblegraph")) {
+        	  String p1 = tmp.getBubbleProperty(0);
+        	  String p2 = tmp.getBubbleProperty(1);
+        	  if (p1 != null) {
+                  properties.add(p1);
+              }
+        	  if (p2 != null) {
+        		  properties.add(p2);
+        	  }
+          }
+          
         }
         data = Overview.getAllGraphs(filter, properties);
       }
@@ -118,6 +131,7 @@ public class Overview extends Controller {
       graphs.add(graph);
 
       // only for testing...
+      // TODO remove before deadline
       graphs.add(FilterController.getBubbleGraph(f, "format", "created"));
       
       // TODO decide when to cut long tail...

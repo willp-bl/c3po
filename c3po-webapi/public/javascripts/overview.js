@@ -433,15 +433,7 @@ function getBubbleChart(ttl) {
 				show : true,
 				showTooltip : false,
 				useAxesFormatters : true,
-			},/*
-			axes : {
-				xaxis : {
-					autoscale: true,
-				},
-				yaxis : {
-					autoscale : true,
-				}
-			}*/
+			}
 		};
 		return options;
 }
@@ -479,8 +471,22 @@ function drawGraphs(data, options) {
 				'jqplotDataClick',
 				function(ev, seriesIndex, pointIndex, data) {
 					startSpinner();
-					var url = '/c3po/filter?filter=' + i + '&value='
-							+ pointIndex + '&type=graph';
+					var url;
+					if (d.type == "bubblechart") {
+						var properties = i.split("_");
+						url = '/c3po/bubblefilter?' +  + 
+							'&property1' + properties[0] +
+							'&property2' + properties[1] +
+							// TODO ALEX recover actual values
+							'&value=' + pointIndex + 
+							'&value1=null' +
+							'&value2=null' + 
+							'&type=graph';
+					}
+					else {
+						url = '/c3po/filter?filter=' + i + '&value=' + pointIndex + '&type=graph';
+					}
+					
 
 					if (options) {
 						var type = options['type'];
@@ -534,46 +540,6 @@ function drawGraphs(data, options) {
 		}
 		idx++;
 	})
-};
-
-
-function drawBubbleChart(title) {
-	ttl="bubbleChart";
-	if($("#bubbleCh").length > 0) {
-		$("#bubbleCh").remove();
-	}
-	// TODO ALEX append instead of prepend once testing is done
-	var container = $('<div id="bubbleCh" class="span-24">');
-	var graphsdiv = $('#graphs').prepend(container);
-	
-	var data = 
-		[[11, 123, 1236, "Acura"], [45, 92, 1067, "Alfa Romeo"],
-		 [24, 104, 1176, "AM General"], [50, 23, 610, "Aston Martin Lagonda"],
-		 [18, 17, 539, "Audi"], [7, 89, 864, "BMW"], [2, 13, 1026, "Bugatti"]];
-	            
-	
-	clazz="";
-	container.append('<div id="' + ttl + '" class="' + clazz + '">');
-	
-	$.jqplot(ttl, [ data ], getBubbleChart(prettifyTitle(ttl)));
-
-   /*
-   $.each(data, function(i, d) {
-
-		$('#' + i).bind(
-				'jqplotDataClick',
-				function(ev, seriesIndex, pointIndex, data) {
-					startSpinner();
-					var url = '/c3po/filter?filter=' + i + '&value='
-							+ pointIndex + '&type=graph';
-
-					
-					$.post(url, function(data) {
-						window.location = '/c3po/overview';
-					});
-				});
-
-	})*/
 };
 
 

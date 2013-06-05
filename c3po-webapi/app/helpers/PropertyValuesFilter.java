@@ -2,7 +2,7 @@ package helpers;
 
 import java.util.List;
 
-public class PropertyValuesFilter {
+public class PropertyValuesFilter implements FilterHelper {
 
   private String property;
   
