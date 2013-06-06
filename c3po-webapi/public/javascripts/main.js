@@ -1,4 +1,8 @@
+var bubbleChartGlobal = false;
+var currentDiv = null;
+
 $(document).ready(function(){
+
 
 	//###############################
 	//#			Navigation			#
@@ -70,9 +74,9 @@ $(document).ready(function(){
 	// build the current filter elements.
 	$.get('/c3po/filters', function(data) {
 		$.each(data, function(i, pvf) {
-			alert(data.length);
+			//alert(data.length);
 			if(pvf.bubble == "null") {
-				alert("null");
+				//alert("null");
 				addNewFilter();
 				var div = $('.propertyfilter')[i];
 				$(div).children('select').val(pvf.property);
@@ -81,7 +85,7 @@ $(document).ready(function(){
 				$(div).children('select:last').val(pvf.selected); 
 			}
 			if(pvf.bubble == "bubble") {
-				alert("bubble");
+				//alert("bubble");
 				addNewFilter(true);
 				var div = $('.propertyfilter')[i];
 				$(div).children('select').val(pvf.property);
@@ -90,7 +94,7 @@ $(document).ready(function(){
 				$(div).children('select:last').val(pvf.selected); 
 			}
 			if(pvf.bubble == "bubble2") {
-				alert("bubble2");
+				//alert("bubble2");
 				var div = $('.propertyfilter2')[i];
 				$(div).children('select').val(pvf.property);
 				$(div).attr('oldValue', pvf.property);
@@ -248,6 +252,7 @@ function addNewFilter(bubbleChart) {
 
 //adds a new select with all properties for the next filter selection
 function addNewPropertiesSelect(properties, bubbleChart) {
+	bubbleChartGlobal = bubbleChart;
 	// check if the previous filter is already setup accordingly
 	var show = false; 
 	if ($('.propertyfilter:last')[0]) {
@@ -355,10 +360,10 @@ function addNewPropertiesSelect(properties, bubbleChart) {
 					timeout:  5000,
 					success: function (oData) {
 						if (oData.type == 'INTEGER') {
-							// TODO ALEX replace with id values
-							//alert('getValuesForProperty("' + url + '", ' + divID + ', ' + bubbleChart + ', ' + sel + ', ' + sel2 + ')');
-							showIntegerPropertyDialog('getValuesForProperty("' + url + '", ' + divID + ', ' + bubbleChart + ', ' + sel + ', ' + sel2 + ')');
+							bubbleChartGlobal = bubbleChart;
+							currentDiv = divID;
 
+							showIntegerPropertyDialog('getValuesForProperty("' + url + '")'); 
 						} else { 
 							showOtherProperty(url, divID, bubbleChart, sel, sel2); 
 						}	    
@@ -415,7 +420,7 @@ function showValuesSelect(filterdiv, pvf, bubbleChart, sel1, sel2) {
 				// only load data if both bubble chart properties are selected
 				var prop1 = $(sel1).val();
 				var prop2 = $(sel2).val();
-				
+
 				if(prop1 && prop2 && (prop1 != prop2)) {
 					
 					var filterVal1 = $(sel1).next().val();
@@ -470,12 +475,12 @@ function showIntegerPropertyDialog(func) {
 				$('.popupconfig').append($('<input type="text" placeholder="bin width" />'));
 			}
 
-			$('.popupconfig').append($('<a class="green_button" href=javascript:'+ func + '>Apply</a>'))
+			$('.popupconfig').append($('<a class="green_button" href=javascript:'+ func + '>Apply</a>'));
 		}
 	});
 }
 
-function getValuesForProperty(url, div, bubbleChart, sel, sel2) {
+function getValuesForProperty(url) {
 	url = getUrlForIntegerProperty(url);
 
 	$.ajax ({
@@ -483,9 +488,10 @@ function getValuesForProperty(url, div, bubbleChart, sel, sel2) {
 		url:      url,
 		timeout:  5000,
 		success:  function (oData) {
-			//var div = $(".propertyfilter:last");
+			var sel = $('.propertyfilter:last').children('select:first');
+			var sel2 = $('.propertyfilter2:last').children('select:first');
 			hidePopupDialog();
-			showValuesSelect(div, oData, bubbleChart, sel, sel2);
+			showValuesSelect(currentDiv, oData, bubbleChartGlobal, sel, sel2);
 		}
 	});
 }
@@ -536,7 +542,7 @@ function showValueOptionDialog() {
 			$('.popupconfig').append($('<input type="text" placeholder="nr of bins" />'));
 		}
 
-		$('.popupconfig').append($('<a class="green_button" href="javascript:hideValueOptionDialog(true)">Apply</a>'))
+		$('.popupconfig').append($('<a class="green_button" href="javascript:hideValueOptionDialog(true)">Apply</a>'));
 	});
 };
 

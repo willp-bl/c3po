@@ -176,7 +176,6 @@ public final class DataHelper {
 
 			// it's a bubble filter with 2 property - value pairs
 			else {
-				// TODO ALEX process correctly
 				for(int i=0; i<2; i++) {
 
 					String p = tmp.getBubbleProperty(i);
@@ -198,8 +197,6 @@ public final class DataHelper {
 	}
 
 	private static void buildFilterQuery(BasicDBObject query, String p, String v, Property property, String type) {
-		//if((type != null) && type.equals("bubblefilter")) {}
-		// do something else
 
 		if (v.equals("Unknown")) {
 			query.put("metadata." + p + ".values", new BasicDBObject("$exists", false));

@@ -184,21 +184,11 @@ public class FilterController extends Controller {
 	      final String t = form.get("type");
 	      final String a = form.get("alg");
 	      final String w = form.get("width");
-	      
 
-//	      if (t == null || t.equals("normal")) {
-	    	  	//return addFromFilter(filter, f1, v1);
-//	    	  	return addFromBubbleFilter(filter, f1, v1, f2, v2);
-	    	  addFromFilter(filter, f1, v1);
-	    	  addFromFilter(filter, f2, v2);
-	    	  
-//	        } else if (t.equals("graph")) {
-//	        	// TODO ALEX int values and bubblegraph method
-//	        	return addFromBubbleFilter(filter, f1, v1, f2, v2);
-//	        	//int value = Integer.parseInt(v1);
-//	        	//return addFromGraph(filter, f1, value, a, w);
-//	        }
-	    	  return ok();
+	      addFromFilter(filter, f1, v1);
+	      addFromFilter(filter, f2, v2);
+
+	      return ok();
 	    }
 	    
 	    return badRequest("No filter was found in the session\n");
@@ -303,13 +293,6 @@ public class FilterController extends Controller {
     return addFromFilter(filter, f, filtervalue);
   }
   
-  // TODO ALEX
-  private static Result addFromBubbleGraph(Filter filter, String f1, int val1, String f2, int val2, String alg, String width) {
-	  	String v1 = null;
-	  	String v2 = null;
-	    return null;
-	  	//return addFromBubbleFilter(filter, f1, v1, f2, v2);
-    }
 
   public static Result getValues() {
     Logger.debug("in method getValues(), retrieving values for selected property");

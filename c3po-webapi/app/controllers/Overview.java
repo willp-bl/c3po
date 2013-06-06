@@ -131,8 +131,7 @@ public class Overview extends Controller {
       graphs.add(graph);
 
       // only for testing...
-      // TODO remove before deadline
-      graphs.add(FilterController.getBubbleGraph(f, "format", "created"));
+      //graphs.add(FilterController.getBubbleGraph(f, "format", "created"));
       
       // TODO decide when to cut long tail...
     }
