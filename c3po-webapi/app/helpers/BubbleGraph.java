@@ -60,8 +60,8 @@ public class BubbleGraph implements BaseGraph {
 				BasicDBObject value = (BasicDBObject) obj.get("value");
 				
 				values.add(value.getLong("count"));
-				String key1 = value.getString("value1");
-				String key2 = value.getString("value2");
+				String key1 = value.getString("value1").replace("'", " ").replace("\"", " ");
+				String key2 = value.getString("value2").replace("'", " ").replace("\"", " ");
 				
 				keys1.add(key1);
 				keys2.add(key2);

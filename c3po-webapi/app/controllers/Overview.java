@@ -112,8 +112,12 @@ public class Overview extends Controller {
     result.put("type", g.getType());
     result.put("title", g.getTitle());
     // for some reason this parser doesn't like ', so convert it to "
-    result.put("graphData", Json.parse(g.getGraphData().replace("'", "\"")));
+    
+    result.put("graphData", Json.parse(g.getGraphData()
+    		.replace("\\", "\\\\")
+    		.replace("'", "\"")));
     result.put("graphOptions", Json.parse(g.getGraphOptions()
+    		.replace("\\", "\\\\")
     		.replace("'", "\"")));
 	return ok(result);
   }
