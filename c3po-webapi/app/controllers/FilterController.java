@@ -186,15 +186,19 @@ public class FilterController extends Controller {
 	      final String w = form.get("width");
 	      
 
-	      if (t == null || t.equals("normal")) {
+//	      if (t == null || t.equals("normal")) {
 	    	  	//return addFromFilter(filter, f1, v1);
-	    	  	return addFromBubbleFilter(filter, f1, v1, f2, v2);
-	        } else if (t.equals("graph")) {
-	        	// TODO ALEX int values and bubblegraph method
-	        	return addFromBubbleFilter(filter, f1, v1, f2, v2);
-	        	//int value = Integer.parseInt(v1);
-	        	//return addFromGraph(filter, f1, value, a, w);
-	        }
+//	    	  	return addFromBubbleFilter(filter, f1, v1, f2, v2);
+	    	  addFromFilter(filter, f1, v1);
+	    	  addFromFilter(filter, f2, v2);
+	    	  
+//	        } else if (t.equals("graph")) {
+//	        	// TODO ALEX int values and bubblegraph method
+//	        	return addFromBubbleFilter(filter, f1, v1, f2, v2);
+//	        	//int value = Integer.parseInt(v1);
+//	        	//return addFromGraph(filter, f1, value, a, w);
+//	        }
+	    	  return ok();
 	    }
 	    
 	    return badRequest("No filter was found in the session\n");
@@ -210,9 +214,9 @@ public class FilterController extends Controller {
     boolean existing = false;
     while (cursor.hasNext()) {
       Filter tmp = DataHelper.parseFilter(cursor.next());
-      if(tmp.getType() != null && tmp.getType().equals("bubblefilter")) {
-		  continue;
-	  }
+//      if(tmp.getType() != null && tmp.getType().equals("bubblefilter")) {
+//		  continue;
+//	  }
       if (tmp.getProperty() != null && tmp.getProperty().equals(f)) {
         Logger.debug("Filter is already present, changing value");
         p.getDB().getCollection(Constants.TBL_FILTERS).remove(tmp.getDocument());
