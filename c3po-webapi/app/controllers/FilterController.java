@@ -3,8 +3,6 @@ package controllers;
 import helpers.BubbleGraph;
 import helpers.Graph;
 import helpers.PropertyValuesFilter;
-import helpers.FilterHelper;
-import helpers.BubbleFilter;
 import helpers.Statistics;
 
 import java.text.DecimalFormat;
@@ -68,24 +66,31 @@ public class FilterController extends Controller {
 	          PropertyValuesFilter f = getValues(tmp.getCollection(), property, tmp.getValue());
 	
 	          f.setSelected(tmp.getValue());
+	          f.setBubble("null");
 	          filters.add(f);
 	        }
         }
         else {
-        	BubbleFilter bf = new BubbleFilter();
         	for(int i=0; i<2; i++) {
+        		
         		String p = tmp.getBubbleProperty(i);
         		String v = tmp.getBubbleValue(i);
+        		Logger.info("p=" + p + ". v=" + v);
         		if( (p != null) && (v != null) ) {
         			final Cache cache = Configurator.getDefaultConfigurator().getPersistence().getCache();
         	          final Property property = cache.getProperty(p);
         	          PropertyValuesFilter f = getValues(tmp.getCollection(), property, v);
         	          f.setSelected(v);
-        	          bf.addPropertyValuesFilter(i+1, f);
+        	          if(i==0) {
+        	        	  f.setBubble("bubble");
+        	          }
+        	          else {
+        	        	  f.setBubble("bubble2");
+        	          }
+        	          Logger.info("adding filter " + f.getBubble());
+        	          filters.add(f);
         		}
         	}
-        	// TODO ALEX
-        	//filters.add(bf);
         }
       }
     }
@@ -116,6 +121,30 @@ public class FilterController extends Controller {
 
     return ok();
   }
+  
+  public static Result removeBubbleFilter(String property1, String property2) {
+	    Logger.debug("in method remove(String property), removing filter with property " + property1 + ", " +  property2);
+	    PersistenceLayer p = Configurator.getDefaultConfigurator().getPersistence();
+	    Filter filter = Application.getFilterFromSession();
+	    BasicDBObject query = new BasicDBObject("descriminator", filter.getDescriminator());
+	    query.put("collection", filter.getCollection());
+	    query.put("property0", property1);
+	    query.put("property1", property2);
+
+	    DBCursor cursor = p.find(Constants.TBL_FILTERS, query);
+	    if (cursor.count() == 0) {
+	      Logger.debug("No filter found for property: " + property1 + ", " +  property2);
+	    } else if (cursor.count() == 1) {
+	      Logger.debug("Removing filter for property: " + property1 + ", " +  property2);
+	      Filter tmp = DataHelper.parseFilter(cursor.next());
+	      p.getDB().getCollection(Constants.TBL_FILTERS).remove(tmp.getDocument());
+	    } else {
+	      Logger.error("Something went wrong, while removing filter for property: " + property1 + ", " +  property2);
+	      throw new RuntimeException("Too many filters found for property " + property1 + ", " +  property2);
+	    }
+
+	    return ok();
+	  }
 
   public static Result add() {
     Logger.debug("in method add(), adding new filter");
@@ -148,10 +177,10 @@ public class FilterController extends Controller {
 
 	    if (filter != null) {
 	      final DynamicForm form = form().bindFromRequest();
-	      final String f1 = form.get("property1");
-	      final String f2 = form.get("property2");
-	      final String v1 = form.get("value1");
-	      final String v2 = form.get("value2");
+	      final String f1 = form.get("property0");
+	      final String f2 = form.get("property1");
+	      final String v1 = form.get("value0");
+	      final String v2 = form.get("value1");
 	      final String t = form.get("type");
 	      final String a = form.get("alg");
 	      final String w = form.get("width");
@@ -161,6 +190,7 @@ public class FilterController extends Controller {
 	    	  	//return addFromFilter(filter, f1, v1);
 	    	  	return addFromBubbleFilter(filter, f1, v1, f2, v2);
 	        } else if (t.equals("graph")) {
+	        	// TODO ALEX int values and bubblegraph method
 	        	return addFromBubbleFilter(filter, f1, v1, f2, v2);
 	        	//int value = Integer.parseInt(v1);
 	        	//return addFromGraph(filter, f1, value, a, w);
@@ -206,7 +236,7 @@ public class FilterController extends Controller {
   }
   
   private static Result addFromBubbleFilter(Filter filter, String f1, String v1, String f2, String v2) {
-	    Logger.debug("in method addFromBubbleFilter(), adding new filter with properties '" + f1 + "," + f2 + "' and values '" + v1 + "," + v2 + "'");
+	    Logger.debug("in method addFromBubbleFilter(), adding new filter with properties '" + f1 + "," + v1 + "' and values '" + f2 + "," + v2 + "'");
 	    PersistenceLayer p = Configurator.getDefaultConfigurator().getPersistence();
 
 	    BasicDBObject ref = new BasicDBObject("descriminator", filter.getDescriminator());

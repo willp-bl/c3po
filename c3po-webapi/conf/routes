@@ -20,6 +20,7 @@ DELETE  /c3po/filter                           controllers.FilterController.remo
 POST    /c3po/filter                           controllers.FilterController.add()
 GET     /c3po/filter/values                    controllers.FilterController.getValues()
 POST    /c3po/bubblefilter                     controllers.FilterController.addBubbleFilter()
+DELETE  /c3po/bubblefilter                     controllers.FilterController.removeBubbleFilter(property1: String, property2: String)
 
 # Collection Overview
 GET     /c3po/overview                         controllers.Overview.index()

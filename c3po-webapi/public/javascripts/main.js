@@ -70,12 +70,34 @@ $(document).ready(function(){
 	// build the current filter elements.
 	$.get('/c3po/filters', function(data) {
 		$.each(data, function(i, pvf) {
-			addNewFilter();
-			var div = $('.propertyfilter')[i];
-			$(div).children('select').val(pvf.property);
-			$(div).attr('oldValue', pvf.property);
-			showValuesSelect(div, pvf);
-			$(div).children('select:last').val(pvf.selected); 
+			alert(data.length);
+			if(pvf.bubble == "null") {
+				alert("null");
+				addNewFilter();
+				var div = $('.propertyfilter')[i];
+				$(div).children('select').val(pvf.property);
+				$(div).attr('oldValue', pvf.property);
+				showValuesSelect(div, pvf);
+				$(div).children('select:last').val(pvf.selected); 
+			}
+			if(pvf.bubble == "bubble") {
+				alert("bubble");
+				addNewFilter(true);
+				var div = $('.propertyfilter')[i];
+				$(div).children('select').val(pvf.property);
+				$(div).attr('oldValue', pvf.property);
+				showValuesSelect(div, pvf);
+				$(div).children('select:last').val(pvf.selected); 
+			}
+			if(pvf.bubble == "bubble2") {
+				alert("bubble2");
+				var div = $('.propertyfilter2')[i];
+				$(div).children('select').val(pvf.property);
+				$(div).attr('oldValue', pvf.property);
+				showValuesSelect(div, pvf);
+				$(div).children('select:last').val(pvf.selected); 
+			}
+			
 		});
 
 	});
@@ -233,9 +255,6 @@ function addNewPropertiesSelect(properties, bubbleChart) {
 		if(selects.length > 1 && $(selects[1]).val() !== "") {
 			show = true;
 		} else {
-			if(bubbleChart) {
-				
-			}
 			$('.propertyfilter:last').effect("shake", {distance:10, times:3, direction: 'up'}, 80);
 		}
 	} else {
@@ -267,7 +286,7 @@ function addNewPropertiesSelect(properties, bubbleChart) {
 				var property2 = $(this).next('select:first').val();
 				$.ajax({
 					type:     'DELETE',
-					url:      '/c3po/filter?property=' + property2,
+					url:      '/c3po/bubblefilter?property0=' + property + "&property1=" + property2,
 					timeout:  5000,
 					success:  function(oData) {
 						stopSpinner();
@@ -304,7 +323,6 @@ function addNewPropertiesSelect(properties, bubbleChart) {
 		// if the select is clicked then get the values for the current
 		// option.
 		$(sel).add(sel2).change(function() {
-			var loadBubbleChart = false;
 			var property = $(this).val();
 			var divID = $(this).parent();
 			
@@ -337,10 +355,11 @@ function addNewPropertiesSelect(properties, bubbleChart) {
 					timeout:  5000,
 					success: function (oData) {
 						if (oData.type == 'INTEGER') {
-							showIntegerPropertyDialog('getValuesForProperty("' + url + '")');
+							// TODO ALEX replace with id values
+							//alert('getValuesForProperty("' + url + '", ' + divID + ', ' + bubbleChart + ', ' + sel + ', ' + sel2 + ')');
+							showIntegerPropertyDialog('getValuesForProperty("' + url + '", ' + divID + ', ' + bubbleChart + ', ' + sel + ', ' + sel2 + ')');
 
 						} else { 
-							//showOtherProperty(url, div2); 
 							showOtherProperty(url, divID, bubbleChart, sel, sel2); 
 						}	    
 					}
@@ -379,7 +398,6 @@ function showValuesSelect(filterdiv, pvf, bubbleChart, sel1, sel2) {
 		($(filterdiv).children('select:last')).remove();
 	}
 
-	var type = pvf.type;
 	var sel = $('<select>').appendTo($(filterdiv));
 	var values = pvf.values;
 
@@ -406,10 +424,10 @@ function showValuesSelect(filterdiv, pvf, bubbleChart, sel1, sel2) {
 					if(filterVal1 && filterVal2) {
 						startSpinner();
 						
-						$.post('/c3po/bubblefilter?property1=' + prop1 + 
-								'&property2=' + prop2 + 
-								'&value1=' + filterVal1 + 
-								'&value2=' + filterVal2 + 
+						$.post('/c3po/bubblefilter?property0=' + prop1 + 
+								'&property1=' + prop2 + 
+								'&value0=' + filterVal1 + 
+								'&value1=' + filterVal2 + 
 								'&type=normal', function(data) {
 							window.location.reload();
 						});
@@ -457,7 +475,7 @@ function showIntegerPropertyDialog(func) {
 	});
 }
 
-function getValuesForProperty(url) {
+function getValuesForProperty(url, div, bubbleChart, sel, sel2) {
 	url = getUrlForIntegerProperty(url);
 
 	$.ajax ({
@@ -465,9 +483,9 @@ function getValuesForProperty(url) {
 		url:      url,
 		timeout:  5000,
 		success:  function (oData) {
-			var div = $(".propertyfilter:last");
+			//var div = $(".propertyfilter:last");
 			hidePopupDialog();
-			showValuesSelect(div, oData);
+			showValuesSelect(div, oData, bubbleChart, sel, sel2);
 		}
 	});
 }

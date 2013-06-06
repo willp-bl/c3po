@@ -101,7 +101,6 @@ function showBubbleChartPopup(properties) {
 	});
 
 
-	// TODO ALEX change to automatically generated ids for more property pairs
 	// on change of one property select
 	$('.popupconfig select').change(function() {
 		var select = $(this);
@@ -117,7 +116,6 @@ function showBubbleChartPopup(properties) {
 		
 		if (value) {
 			// get property (name, type...)
-
 			$.ajax({
 				type : 'GET',
 				url : '/c3po/property?name=' + value,
@@ -384,6 +382,7 @@ function getBubbleChart(ttl) {
 	var options = {
 			title : ttl,
 			seriesDefaults : {
+				   // set transparency, color, label of bubbles
 		           renderer : $.jqplot.BubbleRenderer,
 		           rendererOptions : {
 		               bubbleAlpha : 0.6,
@@ -393,10 +392,12 @@ function getBubbleChart(ttl) {
 		               bubbleGradients: true,
 		               showLabels: false
 		           },
+		           // shadow for bubbles
 		           shadow : true,
 		           shadowAlpha : 0.05,
 		           
 			},
+			// axis labeling
 			axesDefaults : {
 				tickRenderer : $.jqplot.CanvasAxisTickRenderer,
 				tickOptions : {
@@ -410,6 +411,7 @@ function getBubbleChart(ttl) {
         			}
 				}
 			},
+			// how to render the labels for axes
 			axes : {
 				xaxis : {
 					renderer: $.jqplot.CategoryAxisRenderer,
@@ -417,7 +419,8 @@ function getBubbleChart(ttl) {
 				yaxis : {
 					renderer: $.jqplot.CategoryAxisRenderer,
 				}
-			},			
+			},	
+			// how the bubble behaves when highlighted by mouse over event
 			highlighter : {
 				show : true,
 				tooltipLocation : 'n',
@@ -428,6 +431,7 @@ function getBubbleChart(ttl) {
 				bringSeriesToFront : true,
 				tooltipOffset : 50,
 			},
+			// cursor style over plot area
 			cursor : {
 				style : 'pointer', 
 				show : true,
@@ -472,15 +476,16 @@ function drawGraphs(data, options) {
 				function(ev, seriesIndex, pointIndex, data) {
 					startSpinner();
 					var url;
+					
+					// if it is a bubble chart the url has to contain both properties and both values
 					if (d.type == "bubblechart") {
 						var properties = i.split("_");
-						url = '/c3po/bubblefilter?' +  + 
-							'&property1' + properties[0] +
-							'&property2' + properties[1] +
-							// TODO ALEX recover actual values
-							'&value=' + pointIndex + 
-							'&value1=null' +
-							'&value2=null' + 
+						var values = data[3].split(" - ");
+						url = '/c3po/bubblefilter?' + 
+							'property0=' + properties[0] +
+							'&property1=' + properties[1] +
+							'&value0=' + values[0] +
+							'&value1=' + values[1] + 
 							'&type=graph';
 					}
 					else {

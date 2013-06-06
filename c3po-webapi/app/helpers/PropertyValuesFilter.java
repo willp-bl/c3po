@@ -12,6 +12,16 @@ public class PropertyValuesFilter implements FilterHelper {
   
   private String selected;
 
+  private String bubble;
+  
+  public String getBubble() {
+	  return bubble;
+  }
+  
+  public void setBubble(String bubble) {
+	  this.bubble = bubble;
+  }
+  
   public String getProperty() {
     return property;
   }
