@@ -119,6 +119,8 @@ public class Overview extends Controller {
     result.put("graphOptions", Json.parse(g.getGraphOptions()
     		.replace("\\", "\\\\")
     		.replace("'", "\"")));
+    result.put("options", play.libs.Json.toJson(g.getOptions()));
+    
 	return ok(result);
   }
 

@@ -183,9 +183,9 @@ public final class DataHelper {
 
 					if(v != null) {
 
-						if(i==1) {
-							continue;
-						}
+//						if(i==1) {
+//							continue;
+//						}
 						buildFilterQuery(query, p, v, pl.getCache().getProperty(p), t);
 					}
 				}

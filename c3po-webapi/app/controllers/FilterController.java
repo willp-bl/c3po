@@ -177,16 +177,32 @@ public class FilterController extends Controller {
 
 	    if (filter != null) {
 	      final DynamicForm form = form().bindFromRequest();
-	      final String f1 = form.get("property0");
-	      final String f2 = form.get("property1");
-	      final String v1 = form.get("value0");
-	      final String v2 = form.get("value1");
-	      final String t = form.get("type");
-	      final String a = form.get("alg");
-	      final String w = form.get("width");
+	      final String f1 = form.get("property1");
+	      final String f2 = form.get("property2");
+	      // this is the index of the key-key-value triple in the graph data
+	      final String index = form.get("index");	
+	      final String a1 = form.get("alg1");
+	      final String w1 = form.get("width1");
+	      final String a2 = form.get("alg2");
+	      final String w2 = form.get("width2");
 
-	      addFromFilter(filter, f1, v1);
-	      addFromFilter(filter, f2, v2);
+	      
+	      try {
+	    	  int i = Integer.parseInt(index);
+	    	  
+	    	  // we have to calculate the graph again to get the values for the
+	    	  // filter
+	    	  BubbleGraph g = getBubbleGraph(filter, f1, f2, a1, w1, a2, w2);
+	    	  g.sort();	// do not forget to sort, otherwise we would reference a wrong value triple 
+	    	  
+	    	  // now add the filters for the selected bubble
+	    	  addFromFilter(filter, f1, g.getKey1byIndex(i));
+	    	  addFromFilter(filter, f2, g.getKey2byIndex(i));
+	      } catch (NumberFormatException e) {
+	    	  Logger.error("index should be a number. can not create filter");
+	    	  return badRequest("index is not a number");
+	      }
+	      
 
 	      return ok();
 	    }
@@ -229,48 +245,6 @@ public class FilterController extends Controller {
 
   }
   
-  private static Result addFromBubbleFilter(Filter filter, String f1, String v1, String f2, String v2) {
-	    Logger.debug("in method addFromBubbleFilter(), adding new filter with properties '" + f1 + "," + v1 + "' and values '" + f2 + "," + v2 + "'");
-	    PersistenceLayer p = Configurator.getDefaultConfigurator().getPersistence();
-
-	    BasicDBObject ref = new BasicDBObject("descriminator", filter.getDescriminator());
-	    ref.put("collection", filter.getCollection());
-	    DBCursor cursor = Configurator.getDefaultConfigurator().getPersistence().find(Constants.TBL_FILTERS, ref);
-	    boolean existing = false;
-	    while (cursor.hasNext()) {
-	      Filter tmp = DataHelper.parseFilter(cursor.next());
-    	  if(tmp.getType() == null || tmp.getType().equals("null")) {
-    		  continue;
-    	  }
-    	  
-    	  String p1 = tmp.getBubbleProperty(0);
-    	  String p2 = tmp.getBubbleProperty(1);
-    	  
-    	  if(p1 != null && p2 != null) {
-    		  if( (p1.equals(f1) && p2.equals(f2)) || (p2.equals(f1) && p1.equals(f2)) ) {
-    			  Logger.debug("Filter is already present, changing value");
-    		      p.getDB().getCollection(Constants.TBL_FILTERS).remove(tmp.getDocument());
-    		        
-    			  tmp.setBubbleValue(0, tmp.getBubbleValue(0));
-    			  tmp.setBubbleValue(1, tmp.getBubbleValue(1));
-    			  
-    			  p.insert(Constants.TBL_FILTERS, tmp.getDocument());
-			      existing = true;
-			      break;
-    		  }
-    	  }
-	    }
-
-	    if (!existing) {
-	      Logger.info("Filtering based on new filter: " + f1 + " ," + f2 + "' and values '" + v1 + "," + v2 + "'");
-	      Filter newFilter = new Filter(filter.getCollection(), f1, v1, f2, v2);
-	      newFilter.setDescriminator(filter.getDescriminator());
-	      p.insert(Constants.TBL_FILTERS, newFilter.getDocument());
-	      
-	    }
-	    return ok();
-
-	  }
 
   private static Result addFromGraph(Filter filter, String f, int value, String alg, String width) {
     Logger.debug("in method addFromGraph(), adding new filter with property '" + f.toString() + "' and position value '" + value
@@ -598,6 +572,11 @@ public class FilterController extends Controller {
     g.setFromMapReduceJob(graphData);
     g.sort();
     g.convertNumericKeysToIntervals(bin_width1, bin_width2);
+    g.getOptions().put("alg1", alg1);
+    g.getOptions().put("alg2", alg2);
+    g.getOptions().put("width1", Integer.toString(bin_width1));
+    g.getOptions().put("width2", Integer.toString(bin_width2));
+    
 
     return g;
   }
@@ -690,6 +669,8 @@ public class FilterController extends Controller {
 		n = getTotalNumberOfElements(filter);
 		  bins = (int) Math.sqrt(n);
 		  aggregation = getNumericAggregationResult(filter, propertyName);
+		  if (aggregation == null)
+			  return -1;
 		  max = aggregation.getLong("max");
 	      result = (int) (max / bins);
 	} 
@@ -697,6 +678,8 @@ public class FilterController extends Controller {
 		n = getTotalNumberOfElements(filter);
 		  bins = (int) ((Math.log(n) / Math.log(2)) + 1);
 		  aggregation = getNumericAggregationResult(filter, propertyName);
+		  if (aggregation == null)
+			  return -1;
 		  max = aggregation.getLong("max");
 	      result = (int) (max / bins);
 	}
@@ -705,44 +688,7 @@ public class FilterController extends Controller {
 				+ Integer.toString(DEFAULT_BIN_WIDTH));
 		result = DEFAULT_BIN_WIDTH;
 	}
-	/*
-	switch (algo) {
-	case "fixed":
-	  try {
-		  result = Integer.parseInt(width);
-	  } catch (NumberFormatException e) {
-		  Logger.error("given width '" + width + "' does not seem to be a " + 
-				  "valid number. using default value " + 
-				  Integer.toString(DEFAULT_BIN_WIDTH));
-	  }
-	  break;
-		  
-	case "sqrt":
-	  n = getTotalNumberOfElements(filter);
-	  bins = (int) Math.sqrt(n);
-	  aggregation = getNumericAggregationResult(filter, propertyName);
-	  if (aggregation == null)
-		  return -1;
-	  max = aggregation.getLong("max");
-      result = (int) (max / bins);
-	  break;
-		  
-	case "sturge":
-	  n = getTotalNumberOfElements(filter);
-	  bins = (int) ((Math.log(n) / Math.log(2)) + 1);
-	  aggregation = getNumericAggregationResult(filter, propertyName);
-	  if (aggregation == null)
-		  return -1;
-	  max = aggregation.getLong("max");
-      result = (int) (max / bins);
-	  break;
-		  
-	default:
-		Logger.error("unknown algorithm for numeric porperty, using default bin width of " 
-				+ Integer.toString(DEFAULT_BIN_WIDTH));
-		result = DEFAULT_BIN_WIDTH;
-	}
-	*/
+
 	return result;
   }
   

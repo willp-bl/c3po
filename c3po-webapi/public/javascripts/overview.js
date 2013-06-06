@@ -186,6 +186,7 @@ function showBubbleChartPopup(properties) {
 			url : url,
 			timeout : 5000,
 			success : function(oData) {
+    			stopSpinner();
 				hidePopupDialog();
     			var data = {};
     			data[oData.title] = {
@@ -194,8 +195,7 @@ function showBubbleChartPopup(properties) {
     			                     options: oData.graphOptions
     			                     };
     			
-    			drawGraphs(data);
-    			stopSpinner();
+    			drawGraphs(data, oData.options);
     		} // end success function
     	}); // end ajax call
 	}); // end apply.click 
@@ -482,11 +482,16 @@ function drawGraphs(data, options) {
 						var properties = i.split("_");
 						var values = data[3].split(" - ");
 						url = '/c3po/bubblefilter?' + 
-							'property0=' + properties[0] +
-							'&property1=' + properties[1] +
-							'&value0=' + values[0] +
-							'&value1=' + values[1] + 
+							'property1=' + options['property1'] +
+							'&property2=' + options['property2'] +
+							'&index=' + pointIndex +
 							'&type=graph';
+						if (options) {
+							url += '&alg1=' + options['alg1'];
+							url += '&alg2=' + options['alg2'];
+							url += '&width1=' + options['width1'];
+							url += '&width2=' + options['width2'];
+						}
 					}
 					else {
 						url = '/c3po/filter?filter=' + i + '&value=' + pointIndex + '&type=graph';
@@ -506,6 +511,7 @@ function drawGraphs(data, options) {
 							}
 						}
 					}
+//					alert(url);
 					$.post(url, function(data) {
 						window.location = '/c3po/overview';
 					});

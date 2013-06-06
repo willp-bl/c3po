@@ -24,6 +24,8 @@ public class BubbleGraph implements BaseGraph {
 	private String property1;
 	private String property2;
 	
+	private Map<String, String> options = new HashMap<String, String>();
+	
 	private List<String> keys1;
 	private List<String> keys2;
 	private List<Long> values;
@@ -34,8 +36,23 @@ public class BubbleGraph implements BaseGraph {
 	public BubbleGraph(String property1, String property2) {
 		this.property1 = property1;
 		this.property2 = property2;
+		
+		getOptions().put("property1", property1);
+		getOptions().put("property2", property2);
 	}
 	
+	
+	public String getKey1byIndex(int index) {
+		return keys1.get(index);
+	}
+	
+	public String getKey2byIndex(int index) {
+		return keys2.get(index);
+	}
+	
+	public Long getValueByIndex(int index) {
+		return values.get(index);
+	}
 	
 	public void setFromMapReduceJob(List<? extends DBObject> results) {
 		
@@ -154,8 +171,7 @@ public class BubbleGraph implements BaseGraph {
 		
 		res.append(" 'keymap2': ");
 		res.append(getKeyMapArray(keyMap2));
-		res.append("");
-		
+
 		res.append("}");
 		return res.toString();
 	}
@@ -285,6 +301,15 @@ public class BubbleGraph implements BaseGraph {
 			}
 	    }
 	}
+	
+	
+	public Map<String, String> getOptions() {
+		return options;
+	}
+
+	public void setOptions(Map<String, String> options) {
+		this.options = options;
+	}	
 	
 	private String getKeyMapArray(Map<String, Integer> map) {
 		StringBuilder res = new StringBuilder();
