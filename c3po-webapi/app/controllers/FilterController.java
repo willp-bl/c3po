@@ -209,25 +209,25 @@ public class FilterController extends Controller {
 	         	  Property p2 = p.getCache().getProperty(f2);
 		    	    
 	         	  // now add the filters for the selected bubble
-	              if (( p1.getType().equals(PropertyType.INTEGER.name()) ||
-		    	        p1.getType().equals(PropertyType.FLOAT.name()) ) 
-		    	       &&
-		    	       (key1.equals("Unknown") || key1.equals("Conflicted"))
-		    	       ) {
-	            	  Logger.info("can not create numeric filter for value 'Unknown' or 'Conflicted'. Ignoring filter for " + f1);
+                  if (key1.equals("Unknown")) {
+                    Logger.info("can not create filter for value 'Unknown'. Ignoring filter for " + f1);
+                  } else if (( p1.getType().equals(PropertyType.INTEGER.name()) ||
+                               p1.getType().equals(PropertyType.FLOAT.name()) ) 
+                               && key1.equals("Conflicted")) {
+                    Logger.info("can not create numeric filter for value 'Conflicted'. Ignoring filter for " + f1);
 		    	  } else {
-		    		  addFromFilter(filter, f1, key1);
+                    addFromFilter(filter, f1, key1);
 		    	  }
 	
-	              if (( p2.getType().equals(PropertyType.INTEGER.name()) ||
-		    	        p2.getType().equals(PropertyType.FLOAT.name()) ) 
-		    	       &&
-		    	       (key2.equals("Unknown") || key2.equals("Conflicted"))
-		    	       ) {
-	            	  Logger.info("can not create numeric filter for value 'Unknown' or 'Conflicted'. Ignoring filter for " + f2);
-		    	  } else {
-		    		  addFromFilter(filter, f2, key2);
-		    	  }
+                  if (key2.equals("Unknown")) {
+                    Logger.info("can not create filter for value 'Unknown'. Ignoring filter for " + f2);
+                  } else if (( p2.getType().equals(PropertyType.INTEGER.name()) ||
+                               p2.getType().equals(PropertyType.FLOAT.name()) ) 
+                               && key2.equals("Conflicted")) {
+                    Logger.info("can not create numeric filter for value 'Unknown' or 'Conflicted'. Ignoring filter for " + f2);
+                  } else {
+                    addFromFilter(filter, f2, key2);
+                  }
 		      } catch (NumberFormatException e) {
 		    	  Logger.error("index should be a number. can not create filter");
 		    	  return badRequest("index is not a number");
