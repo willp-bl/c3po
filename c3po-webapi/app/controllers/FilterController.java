@@ -836,8 +836,8 @@ public class FilterController extends Controller {
         long low = (int) Double.parseDouble(id) * width;
         long high = low + width - 1;
         keys.add(low + " - " + high);
+        values.add(obj.getString("value"));
       } 
-      values.add(obj.getString("value"));
     }
   }
 
