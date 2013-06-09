@@ -511,7 +511,6 @@ function drawGraphs(data, options) {
 							}
 						}
 					}
-//					alert(url);
 					$.post(url, function(data) {
 						window.location = '/c3po/overview';
 					});
@@ -521,8 +520,14 @@ function drawGraphs(data, options) {
 		} else if (d.type == "bubblechart") {
 		  // remove old tooltip if exists
 		  $('#tooltip' + i).remove();
+		  // build title
+		  var title = prettifyTitle(i); // default title
+		  if (options) {
+			  title = prettifyTitle(options['property1']) + ' (x) - ' +
+			          prettifyTitle(options['property2']) + ' (y)';
+		  }
 		  // draw a bubble chart
-		  var plot = $.jqplot(i, [ d.data ], getBubbleChart(prettifyTitle(i)));
+		  var plot = $.jqplot(i, [ d.data ], getBubbleChart(title));
 		  // draw a tool tip to display the data
 		  // (stolen from http://www.jqplot.com/deploy/dist/examples/bubbleChart.html)
 		  $('#' + i).parent().append('<div style="position:absolute;z-index:99;display:none;background-color:#fff;padding:0.5em" id="tooltip' + i + '"></div>');
