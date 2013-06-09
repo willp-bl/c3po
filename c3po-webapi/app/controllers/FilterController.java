@@ -177,8 +177,11 @@ public class FilterController extends Controller {
 
 	    if (filter != null) {
 	      final DynamicForm form = form().bindFromRequest();
-	      final String f1 = form.get("property1");
-	      final String f2 = form.get("property2");
+	      String t = form.get("type");
+	      final String f1 = form.get("property0");
+	      final String f2 = form.get("property1");
+	      final String v1 = form.get("value0");
+	      final String v2 = form.get("value1");
 	      // this is the index of the key-key-value triple in the graph data
 	      final String index = form.get("index");	
 	      final String a1 = form.get("alg1");
@@ -186,23 +189,26 @@ public class FilterController extends Controller {
 	      final String a2 = form.get("alg2");
 	      final String w2 = form.get("width2");
 
-	      
-	      try {
-	    	  int i = Integer.parseInt(index);
-	    	  
-	    	  // we have to calculate the graph again to get the values for the
-	    	  // filter
-	    	  BubbleGraph g = getBubbleGraph(filter, f1, f2, a1, w1, a2, w2);
-	    	  g.sort();	// do not forget to sort, otherwise we would reference a wrong value triple 
-	    	  
-	    	  // now add the filters for the selected bubble
-	    	  addFromFilter(filter, f1, g.getKey1byIndex(i));
-	    	  addFromFilter(filter, f2, g.getKey2byIndex(i));
-	      } catch (NumberFormatException e) {
-	    	  Logger.error("index should be a number. can not create filter");
-	    	  return badRequest("index is not a number");
-	      }
-	      
+	      if ( t == null || t.equals("normal")) {
+	    	  addFromFilter(filter, f1, v1);
+	    	  addFromFilter(filter, f2, v2);
+	        } else if (t.equals("graph")) {
+	        	try {
+	  	    	  int i = Integer.parseInt(index);
+	  	    	  
+	  	    	  // we have to calculate the graph again to get the values for the
+	  	    	  // filter
+	  	    	  BubbleGraph g = getBubbleGraph(filter, f1, f2, a1, w1, a2, w2);
+	  	    	  g.sort();	// do not forget to sort, otherwise we would reference a wrong value triple 
+	  	    	  
+	  	    	  // now add the filters for the selected bubble
+	  	    	  addFromFilter(filter, f1, g.getKey1byIndex(i));
+	  	    	  addFromFilter(filter, f2, g.getKey2byIndex(i));
+	  	      } catch (NumberFormatException e) {
+	  	    	  Logger.error("index should be a number. can not create filter");
+	  	    	  return badRequest("index is not a number");
+	  	      }
+	        }
 
 	      return ok();
 	    }

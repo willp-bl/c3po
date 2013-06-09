@@ -482,8 +482,8 @@ function drawGraphs(data, options) {
 						var properties = i.split("_");
 						var values = data[3].split(" - ");
 						url = '/c3po/bubblefilter?' + 
-							'property1=' + options['property1'] +
-							'&property2=' + options['property2'] +
+							'property0=' + options['property1'] +
+							'&property1=' + options['property2'] +
 							'&index=' + pointIndex +
 							'&type=graph';
 						if (options) {
