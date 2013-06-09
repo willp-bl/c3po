@@ -76,7 +76,7 @@ function showBubbleChartPopup(properties) {
 	var config = popup.children('.popupconfig');
 
 	// property 1 selection
-	var row1 = $('<div />').appendTo($(config));
+	var row1 = $('<div>x:&nbsp;</div>').appendTo($(config));
 	
 	var sel = $('<select id="prop1">').appendTo($(row1));
 	$(sel).append($('<option>').text("").attr('value', ''));
@@ -87,7 +87,7 @@ function showBubbleChartPopup(properties) {
 	$(config).append($('<br />'));
 
 	// property 2 selection
-	var row2 = $('<div />').appendTo($(config));
+	var row2 = $('<div>y:&nbsp;</div>').appendTo($(config));
 
 	var sel2 = $('<select id="prop2">').appendTo($(row2));
 	$(sel2).append($('<option>').text("").attr('value', ''));
