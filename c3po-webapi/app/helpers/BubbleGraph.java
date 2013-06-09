@@ -222,7 +222,7 @@ public class BubbleGraph implements BaseGraph {
 		    		return ;
 	    		} catch (NumberFormatException e) {
 	    			// ignore this, just try to sort only by key1
-	    			Logger.error("some value for key 2 is not an Integer. just try sorting by key 1");
+	    			Logger.info("some value for key 2 is not an Integer. just try sorting by key 1");
 	    		}
 	    	} 
 	    	
@@ -242,7 +242,7 @@ public class BubbleGraph implements BaseGraph {
 	    			}
 	    		}
     		} catch (NumberFormatException e) {
-    			Logger.error("some value for key 1 is not an Integer. ignoring the sort", e);
+    			Logger.info("some value for key 1 is not an Integer. ignoring the sort");
     			return;
     		}
 			keys1.clear();
@@ -296,7 +296,7 @@ public class BubbleGraph implements BaseGraph {
 					}
 				} catch (NumberFormatException e) {
 					// ignore this, just try to sort only by key1
-					Logger.error("some value for key 2 is not an Integer. ignore the sort");
+					Logger.info("some value for key 2 is not an Integer. ignore the sort");
 				}
 			}
 	    }
