@@ -164,18 +164,23 @@ public final class Constants {
   		"  var result = { count: 1,     " +
   		"                 separator: 0 " +	// store the position of the separator 
   		"               };\n " +
-  		"  if (this.metadata['{1}'] != null && this.metadata['{2}'] != null) {\n" +
-  		"    var value1 = this.metadata['{1}'].status !== 'CONFLICT' ? \n" +
-  		"                 ( {value1convert} ) : 'Conflicted';\n" +
-  		"    var value2 = this.metadata['{2}'].status !== 'CONFLICT' ? \n" +
-  		"                 ( {value2convert} ) : 'Conflicted';\n" +
-  		"    var key = value1 + \"" + BUBBLECHART_KEY_SEP + "\" + value2;\n" +
-  		"    result.separator = value1.length;\n" +
-  		"    emit(key, result);\n" +
-  		"  } else {\n" +
-  		"    result.separator = 'Unknown'.length; \n" + 	
-  		"    emit('Unknown" + BUBBLECHART_KEY_SEP + "Unknown', result);\n" +
-  		"  }\n" +
+		"  var value1 = 'Unknown'; \n" + 
+		"  var value2 = 'Unknown'; \n" +
+  		"  if (this.metadata['{1}'] != null) {\n" +
+  		"    value1 = this.metadata['{1}'].status !== 'CONFLICT' ? \n" +
+  		"             ( {value1convert} ) : 'Conflicted';\n" +
+		"  } \n" +
+  		"  if (this.metadata['{2}'] != null) {\n" +
+  		"    value2 = this.metadata['{2}'].status !== 'CONFLICT' ? \n" +
+  		"             ( {value2convert} ) : 'Conflicted';\n" +
+		"  } \n" +
+  		"  var key = value1 + \"" + BUBBLECHART_KEY_SEP + "\" + value2;\n" +
+  		"  result.separator = value1.toString().length;\n" +
+  		"  emit(key, result);\n" +
+//  		"  } else {\n" +
+//  		"    result.separator = 'Unknown'.length; \n" + 	
+//  		"    emit('Unknown" + BUBBLECHART_KEY_SEP + "Unknown', result);\n" +
+//  		"  }\n" +
   		"}";
 
   /**
