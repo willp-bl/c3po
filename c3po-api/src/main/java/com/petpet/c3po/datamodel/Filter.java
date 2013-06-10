@@ -48,7 +48,12 @@ public class Filter {
 	 */
 	private List<Entry<String, String>> properties;
 
-
+	/**
+	 * The ID of the filter
+	 * If this filter is part of a bubble filter,
+	 * the ID should be set
+	 */
+	private String bubbleFilterID;
 
 	/**
 	 * Creates a default root filter. This means that the filter has no parent
@@ -166,6 +171,7 @@ public class Filter {
 		filter.put("type", type);
 		filter.put("descriminator", descriminator);
 		filter.put("collection", collection);
+		filter.put("filterID", bubbleFilterID);
 
 		if(type.equals("null")) {
 			filter.put("property", property);
@@ -179,6 +185,16 @@ public class Filter {
 		}
 
 		return filter;
+	}
+
+
+	public String getBubbleFilterID() {
+		return bubbleFilterID;
+	}
+
+
+	public void setBubbleFilterID(String bubbleFilterID) {
+		this.bubbleFilterID = bubbleFilterID;
 	}
 
 }

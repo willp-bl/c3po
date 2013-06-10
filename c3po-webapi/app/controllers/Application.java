@@ -195,6 +195,7 @@ public class Application extends Controller {
 	      fQuery.put("value1", null);
     	  fQuery.put("property", null);
     	  fQuery.put("value", null);
+    	  fQuery.put("filterID", null);
       
       DBCursor cursor = pl.find(Constants.TBL_FILTERS, fQuery);
       if (cursor.count() == 1) {

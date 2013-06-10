@@ -118,6 +118,7 @@ public final class DataHelper {
 		String t = (String) object.get("type");
 		String d = (String) object.get("descriminator");
 		String c = (String) object.get("collection");
+		String id = (String) object.get("filterID");
 
 		Filter f;
 
@@ -137,6 +138,7 @@ public final class DataHelper {
 			f = new Filter(c, p1, v1, p2, v2);
 		}
 
+		f.setBubbleFilterID(id);
 		f.setDescriminator(d);
 		return f;
 	}
@@ -183,9 +185,9 @@ public final class DataHelper {
 
 					if(v != null) {
 
-//						if(i==1) {
-//							continue;
-//						}
+						//						if(i==1) {
+						//							continue;
+						//						}
 						buildFilterQuery(query, p, v, pl.getCache().getProperty(p), t);
 					}
 				}

@@ -73,35 +73,45 @@ $(document).ready(function(){
 
 	// build the current filter elements.
 	$.get('/c3po/filters', function(data) {
+		var filterCount = 0;
+		var bubbleFilterCount = 0;
 		$.each(data, function(i, pvf) {
-			//alert(data.length);
+			//alert("bubble = " + pvf.bubble);
 			if(pvf.bubble == "null") {
-				//alert("null");
 				addNewFilter();
-				var div = $('.propertyfilter')[i];
+				var div = $('.propertyfilter')[filterCount];
 				$(div).children('select').val(pvf.property);
 				$(div).attr('oldValue', pvf.property);
 				showValuesSelect(div, pvf);
 				$(div).children('select:last').val(pvf.selected); 
+				
+				filterCount++;
 			}
-			if(pvf.bubble == "bubble") {
-				//alert("bubble");
-				addNewFilter(true);
-				var div = $('.propertyfilter')[i];
-				$(div).children('select').val(pvf.property);
-				$(div).attr('oldValue', pvf.property);
-				showValuesSelect(div, pvf);
-				$(div).children('select:last').val(pvf.selected); 
+			else {
+				for(var j=i+1; j<data.length; j++) {
+					if(data[j].bubble == pvf.bubble) {
+						var pvf2 = data[j];
+						//alert("bubble 2 found = " + pvf.bubble);
+						addNewFilter(true, pvf.bubble);
+						var div = $('.propertyfilter')[filterCount];
+						$(div).children('select').val(pvf.property);
+						$(div).attr('oldValue', pvf.property);
+						showValuesSelect(div, pvf);
+						$(div).children('select:last').val(pvf.selected);
+						
+						var div2 = $('.propertyfilter2')[bubbleFilterCount];
+						$(div2).children('select').val(pvf2.property);
+						$(div2).attr('oldValue', pvf2.property);
+						showValuesSelect(div2, pvf2);
+						$(div2).children('select:last').val(pvf2.selected); 
+						
+						filterCount++;
+						bubbleFilterCount++;
+					}
+				}
+
 			}
-			if(pvf.bubble == "bubble2") {
-				//alert("bubble2");
-				var div = $('.propertyfilter2')[i];
-				$(div).children('select').val(pvf.property);
-				$(div).attr('oldValue', pvf.property);
-				showValuesSelect(div, pvf);
-				$(div).children('select:last').val(pvf.selected); 
-			}
-			
+
 		});
 
 	});
@@ -229,7 +239,7 @@ function stopSpinner() {
 //###############################
 //#			  Filter			#
 //###############################
-function addNewFilter(bubbleChart) {
+function addNewFilter(bubbleChart, filterID) {
 	$.ajax ({
 		headers: { 
 			Accept : "application/json; charset=utf-8",
@@ -240,7 +250,7 @@ function addNewFilter(bubbleChart) {
 		async: false,
 		success:  function (oData) {
 			if(bubbleChart) {
-				addNewPropertiesSelect(oData, true);
+				addNewPropertiesSelect(oData, true, filterID);
 			} else {
 				addNewPropertiesSelect(oData);
 			}
@@ -251,7 +261,7 @@ function addNewFilter(bubbleChart) {
 };
 
 //adds a new select with all properties for the next filter selection
-function addNewPropertiesSelect(properties, bubbleChart) {
+function addNewPropertiesSelect(properties, bubbleChart, filterID) {
 	bubbleChartGlobal = bubbleChart;
 	// check if the previous filter is already setup accordingly
 	var show = false; 
@@ -276,32 +286,29 @@ function addNewPropertiesSelect(properties, bubbleChart) {
 		$(deletediv).click(function() {
 			startSpinner();
 			var property = $(this).siblings('select:first').val();
+			var url = '/c3po/filter?property=' + property;
+			
+			if(bubbleChart) {
+				var property2 = $(this).next('select:first').val();
+				if(filterID) {
+					url = '/c3po/bubblefilter?property0=' + property + "&property1=" + property2 + "&filterID=" + filterID;
+				}
+				else {
+					url = '/c3po/bubblefilter?property0=' + property + "&property1=" + property2 + "&filterID=" + "null";
+				}
+				$(this).parent().next().remove();
+			}
+			$(this).parent().remove();
 			
 			$.ajax({
 				type:     'DELETE',
-				url:      '/c3po/filter?property=' + property,
+				url:      url,
 				timeout:  5000,
 				success:  function(oData) {
 					stopSpinner();
 					window.location.reload();
 				}
 			});
-
-			if(bubbleChart) {
-				var property2 = $(this).next('select:first').val();
-				$.ajax({
-					type:     'DELETE',
-					url:      '/c3po/bubblefilter?property0=' + property + "&property1=" + property2,
-					timeout:  5000,
-					success:  function(oData) {
-						stopSpinner();
-						window.location.reload();
-					}
-				});
-				$(this).parent().next().remove();
-			}
-
-			$(this).parent().remove();
 
 		});
 

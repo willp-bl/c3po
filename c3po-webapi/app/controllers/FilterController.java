@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import play.Logger;
 import play.data.DynamicForm;
@@ -39,6 +40,8 @@ import com.petpet.c3po.utils.DataHelper;
 public class FilterController extends Controller {
 
   private static final int DEFAULT_BIN_WIDTH = 50;	
+  
+  private static int uid = 100;
 	
   /**
    * Gets all selected filters and returns them to the client, so that it can
@@ -58,40 +61,22 @@ public class FilterController extends Controller {
 
       while (cursor.hasNext()) {
         Filter tmp = DataHelper.parseFilter(cursor.next());
-        if(tmp.getType() == null || tmp.getType().equals("null")) {
-        	
-	        if (tmp.getProperty() != null && tmp.getValue() != null) {
-	          final Cache cache = Configurator.getDefaultConfigurator().getPersistence().getCache();
-	          final Property property = cache.getProperty(tmp.getProperty());
-	          PropertyValuesFilter f = getValues(tmp.getCollection(), property, tmp.getValue());
-	
-	          f.setSelected(tmp.getValue());
-	          f.setBubble("null");
-	          filters.add(f);
-	        }
+
+        if (tmp.getProperty() != null && tmp.getValue() != null) {
+          final Cache cache = Configurator.getDefaultConfigurator().getPersistence().getCache();
+          final Property property = cache.getProperty(tmp.getProperty());
+          PropertyValuesFilter f = getValues(tmp.getCollection(), property, tmp.getValue());
+
+          f.setSelected(tmp.getValue());
+          if(tmp.getBubbleFilterID() == null) {
+        	  f.setBubble("null");
+          }
+          else {
+        	  f.setBubble(tmp.getBubbleFilterID());
+          }
+          filters.add(f);
         }
-        else {
-        	for(int i=0; i<2; i++) {
-        		
-        		String p = tmp.getBubbleProperty(i);
-        		String v = tmp.getBubbleValue(i);
-        		Logger.info("p=" + p + ". v=" + v);
-        		if( (p != null) && (v != null) ) {
-        			final Cache cache = Configurator.getDefaultConfigurator().getPersistence().getCache();
-        	          final Property property = cache.getProperty(p);
-        	          PropertyValuesFilter f = getValues(tmp.getCollection(), property, v);
-        	          f.setSelected(v);
-        	          if(i==0) {
-        	        	  f.setBubble("bubble");
-        	          }
-        	          else {
-        	        	  f.setBubble("bubble2");
-        	          }
-        	          Logger.info("adding filter " + f.getBubble());
-        	          filters.add(f);
-        		}
-        	}
-        }
+
       }
     }
 
@@ -122,27 +107,30 @@ public class FilterController extends Controller {
     return ok();
   }
   
-  public static Result removeBubbleFilter(String property1, String property2) {
+  public static Result removeBubbleFilter(String property1, String property2, String id) {
 	    Logger.debug("in method remove(String property), removing filter with property " + property1 + ", " +  property2);
 	    PersistenceLayer p = Configurator.getDefaultConfigurator().getPersistence();
 	    Filter filter = Application.getFilterFromSession();
 	    BasicDBObject query = new BasicDBObject("descriminator", filter.getDescriminator());
 	    query.put("collection", filter.getCollection());
-	    query.put("property0", property1);
-	    query.put("property1", property2);
+	    query.put("filterID", id);
+	    //query.put("property0", property1);
+	    //query.put("property1", property2);
 
 	    DBCursor cursor = p.find(Constants.TBL_FILTERS, query);
 	    if (cursor.count() == 0) {
 	      Logger.debug("No filter found for property: " + property1 + ", " +  property2);
-	    } else if (cursor.count() == 1) {
-	      Logger.debug("Removing filter for property: " + property1 + ", " +  property2);
-	      Filter tmp = DataHelper.parseFilter(cursor.next());
-	      p.getDB().getCollection(Constants.TBL_FILTERS).remove(tmp.getDocument());
-	    } else {
-	      Logger.error("Something went wrong, while removing filter for property: " + property1 + ", " +  property2);
-	      throw new RuntimeException("Too many filters found for property " + property1 + ", " +  property2);
+	    } else if(cursor.count() != 2) {
+	    	Logger.error("Something went wrong, while removing filter for property: " + property1 + ", " +  property2);
+	        throw new RuntimeException("More or less than 2 filters found for:  " + property1 + ", " +  property2);
 	    }
-
+	    else {
+	      Logger.debug("Removing filter for property: " + property1 + ", " +  property2);
+	      while (cursor.hasNext()) {
+	          Filter tmp = DataHelper.parseFilter(cursor.next());
+	          p.getDB().getCollection(Constants.TBL_FILTERS).remove(tmp.getDocument());
+	      }
+	    }
 	    return ok();
 	  }
 
@@ -160,7 +148,7 @@ public class FilterController extends Controller {
       final String w = form.get("width");
 
       if (t == null || t.equals("normal")) {
-        return addFromFilter(filter, f, v);
+        return addFromFilter(filter, f, v, null);
       } else if (t.equals("graph")) {
         int value = Integer.parseInt(v);
 
@@ -189,9 +177,12 @@ public class FilterController extends Controller {
 	      final String a2 = form.get("alg2");
 	      final String w2 = form.get("width2");
 
+	      uid++;
+	      final String filterID = "filter" + uid;//String.valueOf(UUID.randomUUID());
+	      
 	      if ( t == null || t.equals("normal")) {
-	          addFromFilter(filter, f1, v1);
-	          addFromFilter(filter, f2, v2);
+	          addFromFilter(filter, f1, v1, filterID);
+	          addFromFilter(filter, f2, v2, filterID);
 	      } else if (t.equals("graph")) {
 		      try {
 		    	  int i = Integer.parseInt(index);
@@ -216,7 +207,7 @@ public class FilterController extends Controller {
                                && key1.equals("Conflicted")) {
                     Logger.info("can not create numeric filter for value 'Conflicted'. Ignoring filter for " + f1);
 		    	  } else {
-                    addFromFilter(filter, f1, key1);
+                    addFromFilter(filter, f1, key1, filterID);
 		    	  }
 	
                   if (key2.equals("Unknown")) {
@@ -226,7 +217,7 @@ public class FilterController extends Controller {
                                && key2.equals("Conflicted")) {
                     Logger.info("can not create numeric filter for value 'Unknown' or 'Conflicted'. Ignoring filter for " + f2);
                   } else {
-                    addFromFilter(filter, f2, key2);
+                    addFromFilter(filter, f2, key2, filterID);
                   }
 		      } catch (NumberFormatException e) {
 		    	  Logger.error("index should be a number. can not create filter");
@@ -241,7 +232,7 @@ public class FilterController extends Controller {
 	    return badRequest("No filter was found in the session\n");
   }
 
-  private static Result addFromFilter(Filter filter, String f, String v) {
+  private static Result addFromFilter(Filter filter, String f, String v, String filterID) {
     Logger.debug("in method addFromFilter(), adding new filter with property '" + f + "' and value '" + v + "'");
     PersistenceLayer p = Configurator.getDefaultConfigurator().getPersistence();
 
@@ -251,9 +242,7 @@ public class FilterController extends Controller {
     boolean existing = false;
     while (cursor.hasNext()) {
       Filter tmp = DataHelper.parseFilter(cursor.next());
-//      if(tmp.getType() != null && tmp.getType().equals("bubblefilter")) {
-//		  continue;
-//	  }
+
       if (tmp.getProperty() != null && tmp.getProperty().equals(f)) {
         Logger.debug("Filter is already present, changing value");
         p.getDB().getCollection(Constants.TBL_FILTERS).remove(tmp.getDocument());
@@ -268,6 +257,7 @@ public class FilterController extends Controller {
     if (!existing) {
       Logger.info("Filtering based on new filter: " + filter + " " + v);
       Filter newFilter = new Filter(filter.getCollection(), f, v);
+      newFilter.setBubbleFilterID(filterID);
       newFilter.setDescriminator(filter.getDescriminator());
       p.insert(Constants.TBL_FILTERS, newFilter.getDocument());
     }
@@ -295,7 +285,7 @@ public class FilterController extends Controller {
 
     final String filtervalue = graph.getKeys().get(value);
 
-    return addFromFilter(filter, f, filtervalue);
+    return addFromFilter(filter, f, filtervalue, null);
   }
   
 
