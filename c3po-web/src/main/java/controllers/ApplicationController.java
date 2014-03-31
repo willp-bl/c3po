@@ -16,20 +16,41 @@
 
 package controllers;
 
+import com.petpet.c3po.api.dao.PersistenceLayer;
+import com.petpet.c3po.api.model.Property;
+import com.petpet.c3po.utils.Configurator;
 import ninja.Result;
 import ninja.Results;
 
 import com.google.inject.Singleton;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 @Singleton
 public class ApplicationController {
 
     public Result index() {
-
         return Results.html();
-
     }
+
+    public Result getProperties() {
+        Result html= Results.html();
+
+        PersistenceLayer p = Configurator.getDefaultConfigurator().getPersistence();
+        List<String> properties = new ArrayList<String>();
+
+        Iterator<Property> iter = p.find( Property.class, null );
+        while ( iter.hasNext() ) {
+            properties.add( iter.next().getKey() );
+        }
+        return Results.json().render(properties);
+       // return ok( play.libs.Json.toJson( properties ) );
+      //  return Results.html();
+    }
+
     
     public Result helloWorldJson() {
         
