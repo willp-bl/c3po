@@ -17,7 +17,9 @@ package com.petpet.c3po.adaptor.fits;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * A simple helper that reads a file of fits to c3po property mappings.
@@ -58,5 +60,8 @@ public class FITSHelper {
   public static String getPropertyKeyByFitsName( String fitsname ) {
     final String prop = (String) FITS_PROPS.get( fitsname );
     return (prop == null) ? fitsname : prop;
+  }
+  public static Set<String> getFitsProperties(){
+         return FITS_PROPS.stringPropertyNames();
   }
 }

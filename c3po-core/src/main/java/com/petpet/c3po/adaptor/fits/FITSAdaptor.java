@@ -89,6 +89,7 @@ public class FITSAdaptor extends AbstractAdaptor {
       element = context.getElement();
       List<MetadataRecord> values = context.getValues();
 
+
       if ( element != null ) {
         element.setMetadata( values );
       }
