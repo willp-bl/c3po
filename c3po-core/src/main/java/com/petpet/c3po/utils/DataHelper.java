@@ -126,10 +126,10 @@ public final class DataHelper {
       if ( oldMR.getStatus().equals( Status.CONFLICT.name() ) ) {
 
         String newVal = getTypedValue( mr.getProperty().getType(), mr.getValue() ).toString();
-        if ( !oldMR.getValues().contains( newVal ) ) {
-          mr.setStatus( Status.CONFLICT.name() );
-          oldMetadata.add( mr );
-        }
+      //  if ( !oldMR.getValues().contains( newVal ) ) {
+      //    mr.setStatus( Status.CONFLICT.name() );
+     //     oldMetadata.add( mr );
+     //   }
 
       } else {
         String oldVal = getTypedValue( oldMR.getProperty().getType(), oldMR.getValue() ).toString();

@@ -54,6 +54,11 @@ public class MetadataRecord {
         CONFLICT
     }
 
+    public static enum Type {
+        IDENTIFICATION,
+        FEATURE
+    }
+
     /**
      * The property to which the value of this record belongs.
      */
@@ -82,7 +87,9 @@ public class MetadataRecord {
      * @see Status
      */
     private String status;
+    private String type;
 
+    private List<MetadataRecord> identity;
 
 
     /**
@@ -91,6 +98,7 @@ public class MetadataRecord {
     public MetadataRecord() {
         this.sources = new ArrayList<String>();
         this.status = Status.OK.name();
+        this.type=Type.FEATURE.name();
     }
 
     /**
@@ -119,6 +127,15 @@ public class MetadataRecord {
         this( p, value );
         this.status = status.name();
     }
+    public MetadataRecord(Property p, String value, String status) {
+        this( p, value );
+        this.status = status;
+    }
+    public MetadataRecord(Property p, String value, String status, List<String> sources) {
+        this( p, value );
+        this.status = status;
+        this.sources=sources;
+    }
 
 
     public MetadataRecord(Property p, HashMap<String, List<String>>  values, Status status) {
@@ -126,6 +143,12 @@ public class MetadataRecord {
         this.property = p;
         this.values = values;
         this.status = status.name();
+    }
+    public MetadataRecord(Property p, List<MetadataRecord> identity, String status){
+        this.property = p;
+        this.identity=identity;
+        this.status=status;
+        this.type=Type.IDENTIFICATION.name();
     }
 
     public Property getProperty() {
@@ -171,10 +194,17 @@ public class MetadataRecord {
         this.values = values;
     }
 
+    public void setIdentity(List<MetadataRecord> identity){
+        this.identity=identity;
+    }
+    public List<MetadataRecord> getIdentity(){
+        return this.identity;
+    }
+
+
     @Override
     public String toString() {
         return "MetadataRecord [property=" + property.getId() + ", value=" + value
                 + ", status=" + status + ", sources=" + sources + "]";
     }
-
 }

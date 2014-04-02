@@ -89,9 +89,9 @@ public class MongoElementSerializer implements MongoModelSerializer {
             sources = new ArrayList<Object>();
 
             if ( r.getValue() == null || r.getValue().equals( "" ) ) {
-              for ( String s : r.getValues() ) {
-                values.add( DataHelper.getTypedValue( r.getProperty().getType(), s ) );
-              }
+           //   for ( String s : r.getValues() ) {
+          //      values.add( DataHelper.getTypedValue( r.getProperty().getType(), s ) );
+          //    }
               sources.addAll( r.getSources() );
             } else {
 

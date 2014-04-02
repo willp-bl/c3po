@@ -13,10 +13,7 @@ import org.dom4j.tree.DefaultDocument;
 import org.dom4j.tree.DefaultElement;
 
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by artur on 4/1/14.
@@ -39,53 +36,104 @@ public class DOM4Reader {
         {
             return null;
         }
-
-        identify(document.getRootElement());
-
-
+        result.addAll(identify(document.getRootElement()));
+        result.addAll(extractFeatures(document.getRootElement())) ;
         return result;
     }
 
-    public void identify(Element rootElement) {
+    public  List<MetadataRecord> read(Document document){
+        List<MetadataRecord> result= new ArrayList<MetadataRecord>();
+        result.addAll(identify(document.getRootElement()));
+        result.addAll(extractFeatures(document.getRootElement())) ;
+        return result;
+    }
+
+
+    private List<MetadataRecord> extractFeatures(Element rootElement) {
+        List<MetadataRecord> result= new ArrayList<MetadataRecord>();
+
+        result.addAll(extractFeaturesFrom(rootElement.element("filestatus")));
+        result.addAll(extractFeaturesFrom(rootElement.element("fileinfo")));
+
+        Element metadata = rootElement.element("metadata");
+        Iterator iterator = metadata.elementIterator();
+        while (iterator.hasNext()){
+            result.addAll(extractFeaturesFrom((Element) iterator.next()));
+        }
+        return result;
+    }
+
+    private List<MetadataRecord> extractFeaturesFrom(Element element){
+        if (element==null)
+            return null;
+        List<MetadataRecord> result=new ArrayList<MetadataRecord>();
+        Iterator iterator = element.elementIterator();
+        while (iterator.hasNext()){
+            result.add(extractFeatureCommon((Element) iterator.next()));
+        }
+        return result;
+    }
+
+    private MetadataRecord extractFeatureCommon(Element element) {
+        return new MetadataRecord(adaptor.getProperty(element.getName()),
+                element.getStringValue(), getStatus(element), getSources(element)) ;
+    }
+
+    public List<MetadataRecord> identify(Element rootElement) {
+        List<MetadataRecord> result= new ArrayList<MetadataRecord>();
         Element identification = rootElement.element("identification");
         String status = getStatus(identification);
         Iterator identityIterator = identification.elementIterator("identity");
+
         while (identityIterator.hasNext()){
             Element identity = (Element) identityIterator.next();
 
-            HashMap<List<String>, List<Source>> formatMimetypes = getFormatMimetypes(identity);
-            HashMap<String, List<Source>> versions = getVersions(identity);
-            HashMap<String, List<Source>> puid = getPuid(identity);
+            List<MetadataRecord> versions = getVersions(identity);
+            List<MetadataRecord> formatMimetypes = getFormatMimetypes(identity, status);
+            MetadataRecord puid = getPuid(identity);
+            for ( MetadataRecord v: versions){
+                List<MetadataRecord> identityRecord=new ArrayList<MetadataRecord>();
+                identityRecord.addAll(formatMimetypes);
+                identityRecord.add(v);
+                identityRecord.add(puid);
+                result.add(new MetadataRecord(adaptor.getProperty("identity"),identityRecord,status));
+            }
         }
+        return result;
     }
 
-    private HashMap<List<String>, List<Source>> getFormatMimetypes(Element identity) {
-        HashMap<List<String>, List<Source>> formatMimetypes=new HashMap<List<String>, List<Source>>();
-        List<String>  formatMimetype= new ArrayList<String>();
-        formatMimetype.add(identity.attribute("format").getValue());
-        formatMimetype.add(identity.attribute("mimetype").getValue());
-        List<Source> sourcesIdentity=getSources(identity);
-        formatMimetypes.put(formatMimetype,sourcesIdentity);
-        return formatMimetypes;
+    private List<MetadataRecord> getFormatMimetypes(Element identity, String status) {
+        List<MetadataRecord> result=new ArrayList<MetadataRecord>();
+        result.add(new MetadataRecord(adaptor.getProperty("format"),
+                identity.attribute("format").getValue(), status, getSources(identity)));
+        result.add(new MetadataRecord(adaptor.getProperty("mimetype"),
+                identity.attribute("mimetype").getValue(), status, getSources(identity)));
+        return result;
     }
 
-    private HashMap<String, List<Source>> getPuid(Element identity) {
+    private MetadataRecord getPuid(Element identity) {
         Element externalIdentifier = identity.element("externalIdentifier");
-        HashMap<String, List<Source>> puid=new HashMap<String, List<Source>>();
-        puid.put(externalIdentifier.getStringValue(),getSources(externalIdentifier));
-        return puid;
+        String status = getStatus(externalIdentifier);
+        return new MetadataRecord(adaptor.getProperty("puid"),
+                externalIdentifier.getStringValue(), status, getSources(externalIdentifier));
+
+    }
+    private MetadataRecord getFeature(Element element, String feature) {
+        return new MetadataRecord(adaptor.getProperty(feature),
+                element.getStringValue(), getStatus(element), getSources(element));
+
     }
 
-    private HashMap<String, List<Source>> getVersions(Element identity) {
-        HashMap<String, List<Source>> versions=new HashMap<String, List<Source>>();
+    private List<MetadataRecord> getVersions(Element identity) {
+        List<MetadataRecord> result=new ArrayList<MetadataRecord>();
         Iterator versionIterator = identity.elementIterator("version");
         while (versionIterator.hasNext()){
             Element version = (Element) versionIterator.next();
-            List<Source> sourcesVersion=new ArrayList<Source>();
-            sourcesVersion.addAll(getSources(version));
-            versions.put(version.getStringValue(),sourcesVersion);
+            String status = getStatus(version);
+            result.add(new MetadataRecord(adaptor.getProperty("format_version"),
+                    version.getStringValue(), status, getSources(version)));
         }
-        return versions;
+        return result;
     }
 
     private String getStatus(Element element){
@@ -98,23 +146,24 @@ public class DOM4Reader {
         }
         return (value == null) ? "OK" : value;
     }
-    private List<Source> getSources(Element element){
-        List<Source> result=new ArrayList<Source>();
+    private List<String> getSources(Element element){
+        List<String> result=new ArrayList<String>();
         if (element.getName().equals("identity")){
             Iterator sourceIterator = element.elementIterator("tool");
             while (sourceIterator.hasNext()){
                 Element source = (Element) sourceIterator.next();
                 String toolname= source.attribute("toolname").getValue();
                 String toolversion= source.attribute("toolversion").getValue();
-                result.add( adaptor.getSource( toolname, toolversion ))   ;
+                result.add( adaptor.getSource( toolname, toolversion ).getId())   ;
             }
         } else {
             String toolname= element.attribute("toolname").getValue();
             String toolversion= element.attribute("toolversion").getValue();
-            result.add(adaptor.getSource( toolname, toolversion ));
+            result.add(adaptor.getSource( toolname, toolversion ).getId());
         }
         return result;
     }
+
 
 
 }

@@ -94,7 +94,7 @@ public class MongoElementDeserialzer implements MongoModelDeserializer {
         for ( Object o : tmp ) {
           values.add( o.toString() );
         }
-        rec.setValues( values );
+       // rec.setValues( values );
       }
 
       List<String> src = (List<String>) prop.get( "sources" );
