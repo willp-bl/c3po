@@ -25,6 +25,7 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.petpet.c3po.adaptor.tika.TIKASequenceFileReader;
 import com.petpet.c3po.api.gatherer.MetaDataGatherer;
 import com.petpet.c3po.api.model.helper.MetadataStream;
 import com.petpet.c3po.common.Constants;
@@ -51,7 +52,7 @@ public class LocalFileGatherer implements MetaDataGatherer {
     /**
      * A list of supported archive extensions.
      */
-    private static final String[] ARCHIVE_EXTENSIONS = { ".zip", ".tar", ".tar.gz", ".tgz", ".gz" };
+    private static final String[] ARCHIVE_EXTENSIONS = { ".zip", ".tar", ".tar.gz", ".tgz", ".gz", TIKASequenceFileReader.SEQ_FILE};
 
     /**
      * The configuration of the gatherer.
@@ -233,7 +234,12 @@ public class LocalFileGatherer implements MetaDataGatherer {
         File tmpDir = new File( tmp );
         tmpDir.mkdirs();
 
-        FileExtractor.extract( filePath, tmp );
+        if(filePath.toLowerCase().endsWith(SEQ_FILE)) {
+        	// We have a Tika SequenceFile from Hadoop
+        	TIKASequenceFileReader.extract( filePath, tmp);
+        } else {
+        	FileExtractor.extract( filePath, tmp );
+        }
         traverseFiles( tmpDir, true, true );
 
     }
