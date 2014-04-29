@@ -234,7 +234,7 @@ public class LocalFileGatherer implements MetaDataGatherer {
         File tmpDir = new File( tmp );
         tmpDir.mkdirs();
 
-        if(filePath.toLowerCase().endsWith(SEQ_FILE)) {
+        if(filePath.toLowerCase().endsWith(TIKASequenceFileReader.SEQ_FILE)) {
         	// We have a Tika SequenceFile from Hadoop
         	TIKASequenceFileReader.extract( filePath, tmp);
         } else {

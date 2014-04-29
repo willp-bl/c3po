@@ -5,8 +5,10 @@ package com.petpet.c3po.adaptor.tika;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.PrintWriter;
 import java.io.StreamCorruptedException;
 
 import org.apache.commons.codec.binary.Base64;
@@ -38,6 +40,13 @@ public class TIKASequenceFileReader {
 	 * @param tmp
 	 */
 	public static void extract(String filePath, String tmp) {
+		
+		File outputDir = new File(tmp);
+		
+		if(!outputDir.exists()) {
+			outputDir.mkdirs();
+		}
+		
 		SequenceFile.Reader reader = open(filePath);
 		if(null==reader) return;
 		
@@ -67,17 +76,22 @@ public class TIKASequenceFileReader {
 						metadata = (Metadata)o;
 					}
 					if(metadata!=null) {
-						LOG.info("Metadata object reconstructed");
-						// now save the Metadata object as XML in the tmp directory
-						
+						//LOG.info("Metadata object reconstructed");
+						// now save the Metadata object as text in the tmp directory
+						// output to mimic "java -jar tika-app.jar -m file"
+						try {
+							metadataToFile(count, metadata, tmp);
+						} catch(IOException e2) {
+							LOG.error("Could not write metadata to file");
+							e2.printStackTrace();
+						}
 					}
 				} catch(StreamCorruptedException e) {
 					LOG.error("Cannot deserialize Metadata object: "+e.getMessage());
 				}
 				count++;
-				
 			}
-			LOG.info("Count: "+count);
+			LOG.info("Extracted objects: "+count);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			LOG.info(e1.getMessage());
@@ -93,6 +107,24 @@ public class TIKASequenceFileReader {
 			}
 		}
 		
+	}
+
+	private static void metadataToFile(int count, Metadata metadata, String tmp) throws IOException {
+		File output = new File(tmp+"/"+String.format("%08d", count)+".txt");
+		// don't overwrite an existing file
+		if(output.exists()) return;
+		
+		PrintWriter pw = new PrintWriter(new FileWriter(output));
+		
+		String[] names = metadata.names();
+		for(String name : names) {
+			for(String value : metadata.getValues(name)) {
+				pw.println(name+": "+value);
+			}
+		}
+		
+		pw.close();
+
 	}
 
 	private static SequenceFile.Reader open(String filePath) {
