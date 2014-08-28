@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fits xmlns="http://hul.harvard.edu/ois/xml/ns/fits/fits_output" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hul.harvard.edu/ois/xml/ns/fits/fits_output http://hul.harvard.edu/ois/xml/xsd/fits/fits_output.xsd" version="0.6.2" timestamp="8/28/14 1:33 PM">
+  <identification status="CONFLICT">
+    <identity format="PPT" mimetype="application/vnd.ms-powerpoint" toolname="FITS" toolversion="0.6.2">
+      <tool toolname="Exiftool" toolversion="9.06" />
+    </identity>
+    <identity format="Microsoft Powerpoint Presentation" mimetype="application/vnd.ms-powerpoint" toolname="FITS" toolversion="0.6.2">
+      <tool toolname="Droid" toolversion="3.0" />
+      <version toolname="Droid" toolversion="3.0">97-2002</version>
+      <externalIdentifier toolname="Droid" toolversion="3.0" type="puid">fmt/126</externalIdentifier>
+    </identity>
+  </identification>
+  <fileinfo>
+    <lastmodified toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">2014:08:28 10:25:31+00:00</lastmodified>
+    <created toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">2004:01:06 16:48:34</created>
+    <filepath toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">/vagrant/c3po-cmd/src/test/resources/com/petpet/c3po/samples/govdocs/input/000008.ppt</filepath>
+    <filename toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">/vagrant/c3po-cmd/src/test/resources/com/petpet/c3po/samples/govdocs/input/000008.ppt</filename>
+    <size toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">304640</size>
+    <md5checksum toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">dc392edc3c011db30afa7f4de6b53621</md5checksum>
+    <fslastmodified toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">1409221531000</fslastmodified>
+  </fileinfo>
+  <filestatus />
+  <metadata>
+    <document>
+      <title toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">BSE in the U.S.</title>
+      <author toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">Default</author>
+      <isRightsManaged toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">no</isRightsManaged>
+      <isProtected toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">no</isProtected>
+    </document>
+  </metadata>
+</fits>
+

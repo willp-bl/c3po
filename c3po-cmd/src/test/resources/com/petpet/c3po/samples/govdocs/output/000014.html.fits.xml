@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fits xmlns="http://hul.harvard.edu/ois/xml/ns/fits/fits_output" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hul.harvard.edu/ois/xml/ns/fits/fits_output http://hul.harvard.edu/ois/xml/xsd/fits/fits_output.xsd" version="0.6.2" timestamp="8/28/14 1:31 PM">
+  <identification>
+    <identity format="Hypertext Markup Language" mimetype="text/html" toolname="FITS" toolversion="0.6.2">
+      <tool toolname="Jhove" toolversion="1.5" />
+      <tool toolname="Exiftool" toolversion="9.06" />
+      <tool toolname="Droid" toolversion="3.0" />
+      <tool toolname="NLNZ Metadata Extractor" toolversion="3.4GA" />
+      <tool toolname="ffident" toolversion="0.2" />
+      <version toolname="Droid" toolversion="3.0">4.01</version>
+      <externalIdentifier toolname="Droid" toolversion="3.0" type="puid">fmt/100</externalIdentifier>
+    </identity>
+  </identification>
+  <fileinfo>
+    <size toolname="Jhove" toolversion="1.5">38053</size>
+    <lastmodified toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">2014:08:28 10:25:31+00:00</lastmodified>
+    <filepath toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">/vagrant/c3po-cmd/src/test/resources/com/petpet/c3po/samples/govdocs/input/000014.html</filepath>
+    <filename toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">/vagrant/c3po-cmd/src/test/resources/com/petpet/c3po/samples/govdocs/input/000014.html</filename>
+    <md5checksum toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">6308f1d147ec02ac20854171191f0bf9</md5checksum>
+    <fslastmodified toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">1409221531000</fslastmodified>
+  </fileinfo>
+  <filestatus>
+    <well-formed toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">false</well-formed>
+    <valid toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">false</valid>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = meta, Line = 4, Column = 2</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = meta, Line = 7, Column = 2</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = meta, Line = 8, Column = 2</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Tag illegal in context Name = table, Container = span, Line = 11, Column = 649</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 1140</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 1440</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 1833</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 11, Column = 2216</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Tag illegal in context Name = form, Container = table, Line = 11, Column = 2235</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Tag illegal in context Name = td, Container = form, Line = 11, Column = 2309</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = input, Line = 11, Column = 2339</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 2662</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 2826</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Close tag without matching open tag Name = form, Line = 11, Column = 2979</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 3010</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 3401</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 3782</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 4199</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 4602</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 4975</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 5351</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 5711</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = a, Line = 11, Column = 5904</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Close tag without matching open tag Name = td, Line = 11, Column = 5943</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Close tag without matching open tag Name = tr, Line = 11, Column = 5948</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Tag illegal in context Name = tr, Container = a, Line = 11, Column = 5952</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 6505</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 6835</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 11, Column = 7004</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 7009</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 7227</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 7500</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 11, Column = 7679</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 7684</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 7902</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 8121</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 11, Column = 8301</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 8306</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 8524</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 8746</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 11, Column = 8920</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 8925</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 9143</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 9366</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 11, Column = 9540</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 9545</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 9763</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 9986</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 11, Column = 10194</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 10199</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 10417</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 10646</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 11, Column = 10831</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 10836</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 11054</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 11279</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 11, Column = 11455</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 11460</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 11678</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 11899</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 11, Column = 12076</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 12081</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 12299</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 12532</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 12739</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 13039</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 11, Column = 13215</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 11, Column = 13282</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 17, Column = 27</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 17, Column = 353</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 17, Column = 656</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 17, Column = 1104</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = a, Line = 17, Column = 1109</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Tag illegal in context Name = a, Container = a, Line = 17, Column = 1124</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 17, Column = 1289</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 17, Column = 1628</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 17, Column = 1871</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 17, Column = 2047</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 17, Column = 2246</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 17, Column = 2449</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 8</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 169</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Tag illegal in context Name = img, Container = table, Line = 18, Column = 169</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 515</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 524</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 887</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 896</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 1276</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 1285</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 1640</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 1649</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 2046</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 2055</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 2435</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 2444</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 2831</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 2840</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 3009</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 3277</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 3458</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 3627</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 3816</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 3997</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 4190</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 4409</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 4705</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 4714</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 5008</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 5017</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 5388</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 5397</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 5578</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 5747</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 5936</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 18, Column = 6117</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = a, Line = 18, Column = 6345</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 6444</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 18, Column = 6492</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 15</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Tag illegal in context Name = p, Container = a, Line = 20, Column = 15</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 130</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 134</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 138</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 368</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 382</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 20, Column = 1003</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 20, Column = 1172</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 20, Column = 1427</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 20, Column = 1665</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 20, Column = 1697</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 20, Column = 1877</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 2046</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 2060</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 2556</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 20, Column = 2668</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 20, Column = 2837</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 20, Column = 3092</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 20, Column = 3333</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 20, Column = 3365</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 20, Column = 3545</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 3714</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 4249</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 20, Column = 4263</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Close tag without matching open tag Name = br, Line = 20, Column = 4449</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 22, Column = 6</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 22, Column = 20</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 22, Column = 186</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 22, Column = 552</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = a, Line = 22, Column = 822</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 23, Column = 10</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 23, Column = 214</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Tag illegal in context Name = p, Container = i, Line = 23, Column = 214</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 23, Column = 218</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Close tag without matching open tag Name = i, Line = 23, Column = 257</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 23, Column = 260</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 23, Column = 317</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 23, Column = 344</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 24, Column = 126</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 24, Column = 374</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 24, Column = 622</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 24, Column = 849</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 25, Column = 34</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 26, Column = 38</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 27, Column = 19</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 29, Column = 202</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 29, Column = 344</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 29, Column = 506</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 29, Column = 660</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 29, Column = 931</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 30, Column = 155</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 30, Column = 343</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 30, Column = 367</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 30, Column = 531</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Tag illegal in context Name = tr, Container = a, Line = 30, Column = 690</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 30, Column = 740</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = p, Line = 30, Column = 881</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Close tag without matching open tag Name = table, Line = 30, Column = 896</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Close tag without matching open tag Name = td, Line = 30, Column = 904</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Close tag without matching open tag Name = tr, Line = 30, Column = 909</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Tag illegal in context Name = tr, Container = a, Line = 30, Column = 913</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 30, Column = 1086</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 30, Column = 1292</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 30, Column = 1479</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 30, Column = 1666</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 30, Column = 1843</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 30, Column = 2190</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 30, Column = 2214</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 30, Column = 2219</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 32, Column = 13</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 34, Column = 13</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 36, Column = 13</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 38, Column = 13</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 40, Column = 13</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 42, Column = 13</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 42, Column = 686</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = img, Line = 42, Column = 691</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 42, Column = 1051</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Construction with "/&gt;" is incorrect except in XHTML Name = br, Line = 42, Column = 1081</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Close tag without matching open tag Name = table, Line = 44, Column = 199</message>
+    <message toolname="Jhove" toolversion="1.5" status="SINGLE_RESULT">Close tag without matching open tag Name = span, Line = 45, Column = 3</message>
+  </filestatus>
+  <metadata>
+    <text>
+      <markupBasis toolname="Jhove" toolversion="1.5">HTML</markupBasis>
+      <markupBasisVersion toolname="NLNZ Metadata Extractor" toolversion="3.4GA" status="SINGLE_RESULT">4.01</markupBasisVersion>
+    </text>
+  </metadata>
+</fits>
+

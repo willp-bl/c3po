@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fits xmlns="http://hul.harvard.edu/ois/xml/ns/fits/fits_output" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hul.harvard.edu/ois/xml/ns/fits/fits_output http://hul.harvard.edu/ois/xml/xsd/fits/fits_output.xsd" version="0.6.2" timestamp="8/28/14 1:32 PM">
+  <identification status="CONFLICT">
+    <identity format="Macromedia Flash data, version 5" mimetype="application/x-shockwave-flash" toolname="FITS" toolversion="0.6.2">
+      <tool toolname="file utility" toolversion="5.09" />
+    </identity>
+    <identity format="SWF" mimetype="application/x-shockwave-flash" toolname="FITS" toolversion="0.6.2">
+      <tool toolname="Exiftool" toolversion="9.06" />
+    </identity>
+    <identity format="Macromedia Flash" mimetype="application/x-shockwave-flash" toolname="FITS" toolversion="0.6.2">
+      <tool toolname="Droid" toolversion="3.0" />
+      <version toolname="Droid" toolversion="3.0">5</version>
+      <externalIdentifier toolname="Droid" toolversion="3.0" type="puid">fmt/108</externalIdentifier>
+    </identity>
+  </identification>
+  <fileinfo>
+    <lastmodified toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">2014:08:28 10:25:31+00:00</lastmodified>
+    <filepath toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">/vagrant/c3po-cmd/src/test/resources/com/petpet/c3po/samples/govdocs/input/000000.swf</filepath>
+    <filename toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">/vagrant/c3po-cmd/src/test/resources/com/petpet/c3po/samples/govdocs/input/000000.swf</filename>
+    <size toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">80468</size>
+    <md5checksum toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">d7ed6f3f1546702e8571d4d0893cf098</md5checksum>
+    <fslastmodified toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">1409221531000</fslastmodified>
+  </fileinfo>
+  <filestatus />
+  <metadata />
+</fits>
+

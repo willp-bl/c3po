@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fits xmlns="http://hul.harvard.edu/ois/xml/ns/fits/fits_output" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://hul.harvard.edu/ois/xml/ns/fits/fits_output http://hul.harvard.edu/ois/xml/xsd/fits/fits_output.xsd" version="0.6.2" timestamp="8/28/14 1:32 PM">
+  <identification>
+    <identity format="Microsoft Word" mimetype="application/msword" toolname="FITS" toolversion="0.6.2">
+      <tool toolname="file utility" toolversion="5.09" />
+      <tool toolname="Exiftool" toolversion="9.06" />
+      <tool toolname="NLNZ Metadata Extractor" toolversion="3.4GA" />
+      <tool toolname="ffident" toolversion="0.2" />
+    </identity>
+  </identification>
+  <fileinfo>
+    <lastmodified toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">2014:08:28 10:25:31+00:00</lastmodified>
+    <created toolname="Exiftool" toolversion="9.06" status="CONFLICT">2006:08:18 15:44:00</created>
+    <created toolname="NLNZ Metadata Extractor" toolversion="3.4GA" status="CONFLICT">2006-08-18 15:44:00</created>
+    <creatingApplicationName toolname="Exiftool" toolversion="9.06">Microsoft Office Word</creatingApplicationName>
+    <creatingApplicationVersion toolname="Exiftool" toolversion="9.06" status="CONFLICT">11.8107</creatingApplicationVersion>
+    <creatingApplicationVersion toolname="NLNZ Metadata Extractor" toolversion="3.4GA" status="CONFLICT">0x6023</creatingApplicationVersion>
+    <filepath toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">/vagrant/c3po-cmd/src/test/resources/com/petpet/c3po/samples/govdocs/input/000004.doc</filepath>
+    <filename toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">/vagrant/c3po-cmd/src/test/resources/com/petpet/c3po/samples/govdocs/input/000004.doc</filename>
+    <size toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">175616</size>
+    <md5checksum toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">9e53784629be57aade6e192addaf164b</md5checksum>
+    <fslastmodified toolname="OIS File Information" toolversion="0.1" status="SINGLE_RESULT">1409221531000</fslastmodified>
+  </fileinfo>
+  <filestatus />
+  <metadata>
+    <document>
+      <pageCount toolname="NLNZ Metadata Extractor" toolversion="3.4GA" status="SINGLE_RESULT">1</pageCount>
+      <title toolname="Exiftool" toolversion="9.06">CASCADE BILBERRY</title>
+      <author toolname="Exiftool" toolversion="9.06">J. Scott Peterson</author>
+      <isRightsManaged toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">no</isRightsManaged>
+      <isProtected toolname="Exiftool" toolversion="9.06" status="SINGLE_RESULT">no</isProtected>
+      <wordCount toolname="NLNZ Metadata Extractor" toolversion="3.4GA" status="SINGLE_RESULT">2106</wordCount>
+      <characterCount toolname="NLNZ Metadata Extractor" toolversion="3.4GA" status="SINGLE_RESULT">11563</characterCount>
+      <language toolname="NLNZ Metadata Extractor" toolversion="3.4GA" status="SINGLE_RESULT">U.S. English</language>
+    </document>
+  </metadata>
+</fits>
+
